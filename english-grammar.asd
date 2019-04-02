@@ -27,7 +27,6 @@
                (:file "feature-types")
                (:file "utilities")
                (:file "semantics")
-               (:file "parameters-and-loading")
                (:file "cxn-processing")    
                (:module "make-lexicon"
                 :serial t
@@ -42,40 +41,9 @@
                              (:file "write-nouns")
                              (:file "write-prepositions")
                              (:file "write-verbs")))
+               (:file "load-and-save")
                (:module "construction-inventory"
                 :serial t
                 :components ((:file "spacy-pos-tags")
                              (:file "constructional-network-aux")
-                             (:file "construction-inventory")
-                             (:file "render-and-de-render")))
-
-                             )
-                             
-
-                             )))
-
-
-               ;;(:file "package")))
-
-
-               ;;; First extending FCG...
-               ;(:module "constructional-networks"
-               ; :serial t
-               ; :components ((:file "fcg-constructional-network")))
-               ;;; Then loading the grammar files.
-               ;(:module "learning"
-               ; :serial t
-               ; :components ((:file "unknown-words")))
-               ;(:module "hybrids"
-               ; :serial t
-               ; :components ((:file "spacy-pos-tags")
-               ;              ;; (:file "clear-dependency-tags") ;; To be deleted, now in sharing.
-               ;              ;; (:file "semantic-dependency-parser") ;; To be deleted, now in sharing.
-               ;              (:file "learning-operators")
-               ;              (:file "configuration-hybrid-grammar")))
-               ;(:file "render-and-de-render")
-               ;(:file "configuration")
-               ;(:module "evaluation"
-               ;         :serial t
-               ;         :components ((:file "monitors")))
-               ;(:file "tests")))
+                             (:file "construction-inventory")))))

@@ -21,3 +21,24 @@
 
 (in-package :fcg)
 
+(activate-monitor trace-fcg)
+
+;; First time using the English grammar:
+;; -------------------------------------
+(build-grammar)
+(save-beng *fcg-constructions* :name "beng")
+
+;; Starting from a precompiled model:
+;; ----------------------------------
+(restore-beng :name "beng")
+
+;; Loading the grammar without writing the files:
+;; ----------------------------------------------
+(build-grammar :write-files? nil)
+
+;; Customizing what you load:
+;; --------------------------
+(progn
+  (make-beng-cxns)
+  (load-lexicon '("nouns")))
+;; (size *fcg-constructions*)
