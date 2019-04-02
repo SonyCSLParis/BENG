@@ -21,6 +21,14 @@
 
 (in-package :fcg)
 
+(defparameter *no-doubling* nil "Contains a list of base-forms that do not allow doubling of last letters.")
+(defparameter *anomalous-verbs* nil "List of auxiliaries.")
+(defparameter *irregular-verbs-by-class* nil "List of irregular verbs, ordered by conjugation class.")
+(defparameter *irregular-verb-stems* nil "List of lex-ids for irregular verbs.")
+(defparameter *accusative-verbs* nil "List of accusative verbs.")
+(defparameter *ergative-verbs* nil "List of ergative verbs.")
+(defparameter *all-main-verbs* nil "List of all main verbs.")
+
 (setf *no-doubling* '("charter" "pamper" "scatter" "quarrel" "open" "flatten" "barter" "ration"))
 
 (setf *anomalous-verbs* '(be have can may shall will must need dare ought))

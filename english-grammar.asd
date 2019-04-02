@@ -23,17 +23,25 @@
                :category-hierarchies
                :fcg-hybrids)
   :serial t
-  :components ((:file "feature-types")
+  :components ((:file "config")
+               (:file "feature-types")
                (:file "utilities")
                (:file "semantics")
                (:file "parameters-and-loading")
                (:file "cxn-processing")    
                (:module "make-lexicon"
                 :serial t
-                :components ((:file "list-adverbs")
+                :components ((:file "list-adjectives")
+                             (:file "list-adverbs")
+                             (:file "list-nouns")
+                             (:file "list-prepositions")
+                             (:file "list-verbs")
                              (:file "verb-conjugation")
+                             (:file "write-adjectives")
                              (:file "write-adverbs")
+                             (:file "write-nouns")
                              (:file "write-prepositions")
+                             (:file "write-verbs")
                              
 
                              ))))

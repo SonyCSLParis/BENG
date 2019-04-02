@@ -19,9 +19,9 @@
 (defun write-prepositions ()
   (dolist (preposition (append *prepositions-other* *prepositions-spatiotemporal*))
     (let ((spatiotemporal (if (find preposition *prepositions-other* :test #'string=) '- '+)))
-      (with-open-file (out (beng-pathname :directory '("lexicon" "prepositions")
-                                           :name preposition
-                                           :type "lisp")
+      (with-open-file (out (ensure-directories-exist (beng-pathname :directory '("lexicon" "prepositions")
+                                                                    :name preposition
+                                                                    :type "lisp"))
                            :direction :output :if-exists :supersede)
         (add-license-and-copyright-header out)
         (format out "~%~%(in-package :fcg)~%")
