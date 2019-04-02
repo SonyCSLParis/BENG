@@ -41,37 +41,28 @@
                              (:file "write-adverbs")
                              (:file "write-nouns")
                              (:file "write-prepositions")
-                             (:file "write-verbs")
+                             (:file "write-verbs")))
+               (:module "construction-inventory"
+                :serial t
+                :components ((:file "spacy-pos-tags")
+                             (:file "constructional-network-aux")
+                             (:file "construction-inventory")
+                             (:file "render-and-de-render")))
+
+                             )
                              
 
-                             ))))
+                             )))
 
 
                ;;(:file "package")))
 
 
-               ;(:file "feature-types")
                ;;; First extending FCG...
                ;(:module "constructional-networks"
                ; :serial t
                ; :components ((:file "fcg-constructional-network")))
                ;;; Then loading the grammar files.
-               ;(:file "package")
-               ;(:file "utilities")
-               ;(:file "semantics")
-               ;(:file "temp-constructions")
-               ;(:file "stanford-pos-tagger-interface")
-               ;(:file "make-lexicon")
-               ;(:module "inventory-support"
-               ; :serial t
-               ; :components ((:file "verb-conjugation")
-               ;              (:file "verb-list")
-               ;              (:file "verbs")
-               ;              (:file "common-nouns")
-               ;              (:file "nouns")
-               ;              (:file "adjectives-list")
-               ;              (:file "adjectives")
-               ;              (:file "verbnet-interface")))
                ;(:module "learning"
                ; :serial t
                ; :components ((:file "unknown-words")))
