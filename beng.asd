@@ -24,10 +24,12 @@
                :fcg-hybrids)
   :serial t
   :components ((:file "package")
-               (:file "config")
-               (:file "feature-types")
+               (:module "signature"
+                :serial t
+                :components ((:file "config")
+                             (:file "feature-types")
+                             (:file "semantics")))
                (:file "utilities")
-               (:file "semantics")
                (:file "cxn-processing")    
                (:module "make-lexicon"
                 :serial t
