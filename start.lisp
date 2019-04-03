@@ -21,8 +21,6 @@
 
 (in-package :beng)
 
-(activate-monitor trace-fcg)
-
 ;; First time using the English grammar:
 ;; -------------------------------------
 (build-grammar)
@@ -43,4 +41,10 @@
   (load-lexicon '("nouns")))
 ;; (size *fcg-constructions*)
 
-(comprehend "test")
+
+;; Start testing:
+;; -----------------------------------------------
+;; For turning the FCG web interace on and off:
+(toggle-monitor trace-fcg)
+(comprehend "what did the boy break?")
+(comprehend "the boy broke the window")

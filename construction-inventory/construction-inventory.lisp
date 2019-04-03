@@ -38,7 +38,7 @@
                  (form set-of-predicates)
                  (meaning set-of-predicates))
  :fcg-configurations (;; Form predicates
-                      (:form-predicates meets precedes fields first last)
+                      (:form-predicates meets before fields first last)
                       ;; ----------------------------------------------------------------------------------
                       ;; Semantic Views
                       ;; ----------------------------------------------------------------------------------

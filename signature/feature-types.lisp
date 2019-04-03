@@ -17,7 +17,7 @@
 (in-package :fcg)
 
 (export '(alignment
-          categories
+          ; categories ;; Do not export, is already exported in :type-hierarchies.
           dependents
           footprints
           history
