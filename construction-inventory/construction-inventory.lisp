@@ -14,14 +14,14 @@
 ;;;     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------------
 
-(in-package :fcg)
-
-(use-package :type-hierarchies)
+(in-package :beng)
 
 (def-fcg-constructions-with-type-hierarchy
  BENG
  :cxn-inventory-type constructional-network-inventory
- :feature-types ((alignment sequence)
+ :feature-types (;; Make sure these are exported from the :fcg package. See feature-types.lisp
+                 ;; in the Signature folder.
+                 (alignment sequence)
                  (categories set)
                  (dependents set)
                  (footprints set)
@@ -69,7 +69,7 @@
                       ;; NLP Tools
                       ;; ----------------------------------------------------------------------------------
                       (:preprocessing-tools
-                       ;;(:postagger-results #'english-grammar::get-stanford-and-universal-pos-tags)
+                       (:postagger-results #'get-penelope-pos-tags) ;;#'get-stanford-and-universal-pos-tags)
                        (:named-entities #'get-penelope-named-entities))
                       ;; ----------------------------------------------------------------------------------
                       ;; Construction Supplier

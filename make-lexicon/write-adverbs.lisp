@@ -14,7 +14,7 @@
 ;;;     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------------
 
-(in-package :fcg)
+(in-package :beng)
 
 (defun write-negation-adverb (adverb out)
   "Write a different adverb for negation adverbs."
@@ -49,7 +49,7 @@
                                                                   :type "lisp"))
                          :direction :output :if-exists :supersede)
       (add-license-and-copyright-header out)
-      (format out "~%~%(in-package :fcg)~%")
+      (format out "~%~%(in-package :beng)~%")
       (if (find adverb *negation-adverbs* :test #'equalp)
         (write-negation-adverb adverb out)
         (progn (format out "~%(def-fcg-cxn ~a-adverb-cxn" adverb)

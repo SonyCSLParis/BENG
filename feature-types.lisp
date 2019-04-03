@@ -17,12 +17,14 @@
 (in-package :fcg)
 
 (export '(alignment
+          categories
           dependents
           footprints
           history
           subunits
           boundaries
           agreement
+          args
           ev-args
           sem-class
           lexical-alignment

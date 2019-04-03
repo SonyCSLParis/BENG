@@ -19,7 +19,7 @@
 ;;;
 ;;; The classes of irregular verbs are taken from "Foundations of English Grammar" (Dekeyser, Devriendt, Tops & Geukens).
 
-(in-package :fcg)
+(in-package :beng)
 
 (defparameter *no-doubling* nil "Contains a list of base-forms that do not allow doubling of last letters.")
 (defparameter *anomalous-verbs* nil "List of auxiliaries.")

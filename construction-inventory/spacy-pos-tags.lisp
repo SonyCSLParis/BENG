@@ -14,7 +14,7 @@
 ;;;     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------------
 
-(in-package :fcg)
+(in-package :beng)
 
 ;;;;; This FCG-dependency-parser hybrid uses the Spacy dependency parser
 ;;;;; (see semantic-dependency-parser.lisp in this folder).

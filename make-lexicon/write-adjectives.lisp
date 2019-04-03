@@ -14,7 +14,7 @@
 ;;;     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------------
 
-(in-package :fcg)
+(in-package :beng)
 
 ;;; Do the following if you need to re-generate everything:
 ;; (list-adjectives) ;; -> only if you do not have the file adjectives-list.lisp
@@ -31,7 +31,7 @@
                                                                        :type "lisp"))
                              :direction :output :if-exists :supersede)
           (add-license-and-copyright-header out)
-          (format out "~%~%(in-package :fcg)~%")
+          (format out "~%~%(in-package :beng)~%")
           (format out "~%(def-fcg-cxn ~a-adj-lex" string)
           (format out "~%             ((?~a-unit" string)
           (format out "~%               (referent ?ref)")
@@ -63,7 +63,7 @@
                                              :type "lisp"))
                              :direction :output :if-exists :supersede)
           (add-license-and-copyright-header out)
-          (format out "~%~%(in-package :fcg)~%")
+          (format out "~%~%(in-package :beng)~%")
           (format out "~%(def-fcg-cxn ~a-adj-lex" string)
           (format out "~%             ((?~a-unit" string)
           (format out "~%               (referent ?ref)")

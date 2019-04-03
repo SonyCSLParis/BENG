@@ -14,7 +14,7 @@
 ;;;     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------------
 
-(in-package :fcg)
+(in-package :beng)
 
 (defun write-lex-noun-with-string (out base-form &optional (agreement '(- - + -)))
   (format out "~%(def-fcg-cxn ~a-noun-lex" base-form)
@@ -45,7 +45,7 @@
                                        :name (or base-form plural-form) :type "lisp"))
                        :direction :output :if-exists :supersede)
     (add-license-and-copyright-header out)
-    (format out "~%~%(in-package :fcg)~%")
+    (format out "~%~%(in-package :beng)~%")
     (cond ((string= base-form plural-form) (write-lex-noun-with-string out base-form))
           ((and (null base-form) plural-form) (write-lex-noun-with-string out plural-form '(- - - +)))
           (t

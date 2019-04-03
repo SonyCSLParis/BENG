@@ -14,7 +14,7 @@
 ;;;     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------------
 
-(in-package :fcg)
+(in-package :beng)
 
 ;;;;; --------------------------------------------------------------------------------
 ;;;;; This file contains a specification of the semantics used by the English grammar.

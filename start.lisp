@@ -17,9 +17,9 @@
 ;;; Make sure that you have loaded the file english-grammar.asd (either through
 ;;; your Lisp init-file or manually). Then load the English grammar by evaluating:
 
-(ql:quickload :english-grammar)
+(ql:quickload :beng)
 
-(in-package :fcg)
+(in-package :beng)
 
 (activate-monitor trace-fcg)
 
@@ -42,3 +42,5 @@
   (make-beng-cxns)
   (load-lexicon '("nouns")))
 ;; (size *fcg-constructions*)
+
+(comprehend "test")

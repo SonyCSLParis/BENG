@@ -14,7 +14,7 @@
 ;;;     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------------
 
-(in-package :fcg)
+(in-package :beng)
 
 (defun write-prepositions ()
   (dolist (preposition (append *prepositions-other* *prepositions-spatiotemporal*))
@@ -24,7 +24,7 @@
                                                                     :type "lisp"))
                            :direction :output :if-exists :supersede)
         (add-license-and-copyright-header out)
-        (format out "~%~%(in-package :fcg)~%")
+        (format out "~%~%(in-package :beng)~%")
         (format out "~%(def-fcg-cxn ~a-preposition" preposition)
         (format out "~%             ((?~a" preposition)
         (format out "~%               (footprints (lex morph number))")

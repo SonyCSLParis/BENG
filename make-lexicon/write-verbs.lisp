@@ -14,7 +14,7 @@
 ;;;     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------------
 
-(in-package :fcg)
+(in-package :beng)
 
 (defun write-verb-lex-cxn (out lemma &optional verb-type meaning)
   "Function for writing the lexical construction for verbs."
@@ -259,7 +259,7 @@
                                        :type "lisp"))
                        :direction :output :if-exists :supersede)
     (add-license-and-copyright-header out)
-    (format out "~%~%(in-package :fcg)")
+    (format out "~%~%(in-package :beng)")
     (multiple-value-bind (base-form 3sg-form ing-form past-tense-form past-participle-form)
         (conjugate-verb verb verb-class)
       ;; Write the lexical construction.

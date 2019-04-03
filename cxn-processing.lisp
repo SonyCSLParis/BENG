@@ -40,12 +40,13 @@
         (if pos
           (let ((postagger-tags (get-data (car-source-cfs (cipn-car node)) :postagger-results))
                 (bindings (car-second-merge-bindings (cipn-car node))))
-            (loop for binding in bindings
-                  for match = (assoc (rest binding) postagger-tags)
-                  when match ;;this is a node with a split in POS tags!
-                  return (+ base-priority (if (intersection pos (rest match) :test #'equal)
-                                            0.9
-                                            0.1))))
+            (or (loop for binding in bindings
+                      for match = (assoc (rest binding) postagger-tags)
+                      when match ;;this is a node with a split in POS tags!
+                      return (+ base-priority (if (intersection pos (rest match) :test #'equal)
+                                                0.9
+                                                0.1)))
+                0.5)) ;; safety net
           (cip-priority node :best-first-minimize-boundary-distance-and-maximize-semantic-coherence))))))
 
 ;;;;; +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
