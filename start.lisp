@@ -48,3 +48,4 @@
 (toggle-monitor trace-fcg)
 (comprehend "what did the boy break?")
 (comprehend "the boy broke the window")
+(comprehend "The average sentence is usually about ten words long.")                          

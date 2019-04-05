@@ -22,6 +22,7 @@
  :feature-types (;; Make sure these are exported from the :fcg package. See feature-types.lisp
                  ;; in the Signature folder.
                  (alignment sequence)
+                 (arg-struct set-of-predicates)
                  (categories set)
                  (dependents set)
                  (footprints set)
@@ -37,6 +38,7 @@
                  (syn-roles set-of-predicates)
                  (form set-of-predicates)
                  (meaning set-of-predicates))
+ :type-hierarchy *fusion-hierarchy*
  :fcg-configurations (;; Form predicates
                       (:form-predicates meets before fields first last)
                       ;; ----------------------------------------------------------------------------------

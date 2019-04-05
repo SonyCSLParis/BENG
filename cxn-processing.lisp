@@ -46,7 +46,7 @@
                       return (+ base-priority (if (intersection pos (rest match) :test #'equal)
                                                 0.9
                                                 0.1)))
-                0.5)) ;; safety net
+                base-priority)) ;; safety net
           (cip-priority node :best-first-minimize-boundary-distance-and-maximize-semantic-coherence))))))
 
 ;;;;; +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -71,7 +71,7 @@
   "Checks the root and returns entities (for IRL meanings) or predicates."
   (let* ((units (fcg-get-transient-unit-structure node))
          (lex-ids (loop for unit in units
-                        for lex-id = (unit-feature-value unit 'lex-id)
+                        for lex-id = (second (assoc 'lex-id (unit-body unit) :test #'string=))
                         when lex-id collect it))
          (strings (mapcar #'third (extract-strings (list (get-root units)))))
          (meanings (loop for meaning in (extract-meaning (get-root units))

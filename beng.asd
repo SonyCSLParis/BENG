@@ -27,7 +27,7 @@
                (:module "signature"
                 :serial t
                 :components ((:file "config")
-                             (:file "feature-types")
+                             (:file "fusion-hierarchy")
                              (:file "semantics")))
                (:file "utilities")
                (:file "cxn-processing")    
