@@ -23,20 +23,21 @@
 ;;;;; https://spacy.io/api/annotation#section-pos-tagging
 ;;;;;
 
-(defparameter *spacy-pos-tag-conversion-table* nil "List of POS Tags and their corresponding categories in the grammar.")
+(defparameter *spacy-pos-tag-conversion-table* nil
+  "List of POS Tags and their corresponding categories in the grammar.")
 
 ;; Note: this conversion table is far from complete, but contains only relevant conversions.
 (setf *spacy-pos-tag-conversion-table*
-      '(("NN" noun)
-        ("NNS" noun)
-        ("NNP" propernoun)
-        ("NNPS" propernoun)
-        ("VB" verb)
-        ("VBD" verb)
-        ("VBG" verb)
-        ("VBN" verb)
-        ("VBP" verb)
-        ("VBZ" verb)))
+      '(("NN" "NOUN")
+        ("NNS" "NOUN")
+        ("NNP" "NOUN") ; propernoun
+        ("NNPS" "NOUN") ; propernoun
+        ("VB" "VERB")
+        ("VBD" "VERB")
+        ("VBG" "VERB")
+        ("VBN" "VERB")
+        ("VBP" "VERB")
+        ("VBZ" "VERB")))
 
 
 ;;; Obsolete: old conversions (might be revived if more distinctions are necessary)

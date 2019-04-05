@@ -160,11 +160,12 @@
          nil)
         ((remaining-labels cxn-supplier)
          ;; go to the next label
-         (setf (current-label cxn-supplier) (car (remaining-labels cxn-supplier)))
-         (setf (remaining-labels cxn-supplier) (cdr (remaining-labels cxn-supplier)))
-         (setf (all-constructions-of-current-label cxn-supplier)
-               (english-all-constructions-of-label-hashed node (current-label cxn-supplier)))
-         (setf (remaining-constructions cxn-supplier)
+         
+         (setf (current-label cxn-supplier) (car (remaining-labels cxn-supplier))
+               (remaining-labels cxn-supplier) (cdr (remaining-labels cxn-supplier))
+               (all-constructions-of-current-label cxn-supplier)
+               (english-all-constructions-of-label-hashed node (current-label cxn-supplier))
+               (remaining-constructions cxn-supplier)
                (all-constructions-of-current-label cxn-supplier))
          (next-cxn cxn-supplier node))))
 
@@ -202,5 +203,3 @@
    when nodes-to-queue do (return nodes-to-queue)
    while cxns
    finally (setf (fully-expanded? node) t)))
-
-

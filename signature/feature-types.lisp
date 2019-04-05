@@ -16,7 +16,8 @@
 
 (in-package :fcg)
 
-(export '(alignment
+(export '(;; Features
+          alignment
           ; categories ;; Do not export, is already exported in :type-hierarchies.
           dependents
           footprints
@@ -31,4 +32,22 @@
           potential-lex-class
           syn-roles
           form
-          meaning))
+          meaning
+          lex-id
+
+          ;; Construction Sets
+          hashed-string
+          marked-morph
+          zero-morph
+          hashed-lex-id
+          lex
+          referring-expressions
+          marked-phrasal
+          unmarked-phrasal
+          defaults
+          functional
+          arg-cxn
+          unhashed
+          lex2
+
+          ))
