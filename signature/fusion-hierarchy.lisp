@@ -38,9 +38,30 @@
 (defparameter *fusion-hierarchy* nil "Captures the relations for the fusion hierarchy.")
 
 (setf *fusion-hierarchy* (make-instance 'type-hierarchy))
-(add-categories '(Top Actor Undergoer Emphasized-Role) *fusion-hierarchy*)
-(add-link 'Actor 'Top *fusion-hierarchy* :weight 1.0)
-(add-link 'Undergoer 'Top *fusion-hierarchy* :weight 1.0)
-(add-link 'Emphasized-Role 'Top *fusion-hierarchy* :weight 1.0)
+(add-categories '(Top
+                  ;; Argument Roles
+                  Actor Undergoer Emphasized-Role
+                  ;; Grammatical Functions
+                  Subject Object Dative Oblique
+                  ;; Parts-of-Speech
+                  Noun CommonNoun ProperNoun
+                  Verb Aux Lex-Verb
+                  ) *fusion-hierarchy*)
 
-; make-html
+;; Argument Roles
+(dolist (arg-role '(Actor Undergoer Emphasized-Role))
+  (add-link arg-role 'Top *fusion-hierarchy* :weight 1.0))
+
+;; Grammatical Functions
+(dolist (grammatical-function '(Subject Object Dative Oblique))
+  (add-link grammatical-function 'Top *fusion-hierarchy* :weight 1.0))
+
+;; Parts-of-Speech
+(progn
+  (dolist (pos '(Noun Verb))
+    (add-link pos 'Top *fusion-hierarchy*))
+  (dolist (pos '(CommonNoun ProperNoun))
+    (add-link pos 'Noun *fusion-hierarchy* :weight 1.0))
+  (dolist (pos '(Aux Lex-Verb))
+    (add-link pos 'Verb *fusion-hierarchy* :weight 1.0)))
+           
