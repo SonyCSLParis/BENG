@@ -29,6 +29,7 @@
 
 (defun load-lexicon (&optional (lex-classes '("adjectives"
                                               "adverbs"
+                                              "determiners"
                                               "nationalities"
                                               "nouns"
                                               "prepositions"
@@ -61,10 +62,39 @@
                        :name word
                        :type "lisp")))
 
-(defun load-verbs (word)
+(defun load-verb (word)
   (load (beng-pathname :directory '("lexicon" "verbs")
                        :name word
                        :type "lisp")))
+
+(defun load-articles ()
+  (load (beng-pathname :directory '("lexicon" "determiners")
+                       :name "articles"
+                       :type "lisp")))
+;; (load-articles)
+
+(defun load-quantifiers ()
+  (load (beng-pathname  :directory '("lexicon" "determiners")
+                        :name "quantifiers"
+                        :type "lisp")))
+;; (load-quantifiers)
+
+(defun load-possessive-pronouns ()
+  (load (beng-pathname  :directory '("lexicon" "determiners")
+                        :name "possessive-pronouns"
+                        :type "lisp")))
+;; (load-possessive-pronouns)
+
+(defun load-demonstratives ()
+  (load (beng-pathname  :directory '("lexicon" "determiners")
+                        :name "demonstratives"
+                        :type "lisp")))
+;; (load-demonstratives)
+
+(defun load-determiners ()
+  (load-lexicon '("determiners")))
+;; (load-determiners)
+  
 
 ;;;;;; Writing the lexicon.
 ;;;;;; ----------------------------------------------------------------
