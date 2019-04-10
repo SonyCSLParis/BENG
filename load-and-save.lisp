@@ -34,9 +34,10 @@
                                               "nouns"
                                               "prepositions"
                                               "verbs")))
-  (loop for lex-class in lex-classes
-        do (load-lexical-constructions lex-class)))
-
+  (with-disabled-monitors
+    (loop for lex-class in lex-classes
+          do (load-lexical-constructions lex-class))))
+ 
 (defun load-adjective (word)
   (load (beng-pathname :directory '("lexicon" "adjectives")
                        :name word
