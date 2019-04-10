@@ -21,7 +21,8 @@
                :xmls
                :nlp-tools
                :category-hierarchies
-               :fcg-hybrids)
+               :fcg-hybrids
+               #+lispworks :dev-tools)
   :serial t
   :components ((:file "package")
                (:module "signature"
@@ -50,3 +51,9 @@
                 :components ((:file "spacy-pos-tags")
                              (:file "constructional-network-aux")
                              (:file "construction-inventory")))))
+
+(in-package :beng)
+
+(defparameter *beng-pathname*
+  (make-pathname :directory (pathname-directory (or *load-truename*
+						    *compile-file-truename*))))

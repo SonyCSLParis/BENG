@@ -19,7 +19,6 @@
 
 (ql:quickload :beng)
 
-
 ;; (ql:quickload :dev-tools)
 
 (in-package :beng)

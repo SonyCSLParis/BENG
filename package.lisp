@@ -11,4 +11,5 @@
         :monitors
         :meta-layer-learning
         :network
-        :type-hierarchies))
+        :type-hierarchies
+        #+lispworks :dev-tools))

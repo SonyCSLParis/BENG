@@ -16,16 +16,14 @@
 
 (in-package :beng)
 
-;;;;; Setting the BENG pathname.
+;;;;; Helper function for using the BENG pathname.
 ;;;;; --------------------------------------------------------------------------------
-(defparameter *beng-pathname* (babel-pathname :directory '(:up "grammars" "English"))
-  "Directory of the English grammar. Please modify this if you have not installed it in this path.")
-
 (defun beng-pathname (&key directory name type)
   "Helper function for accessing files of the English grammar."
   (merge-pathnames  (make-pathname :directory  (cons :relative directory)
 				   :name name :type type)
 		    *beng-pathname*))
+;; (beng-pathname)
   
 ;;;;; Configuration utilities for manipulating the configuration of the grammar.
 ;;;;; --------------------------------------------------------------------------------
