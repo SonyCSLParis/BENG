@@ -67,6 +67,4 @@
 ; (toggle-monitor trace-fcg-search-process)
 
 ;; Some examples
-(comprehend "what did the boy break?")
-(comprehend "the boy broke the window")
-(comprehend "The average sentence is usually about ten words long.")                 
+(comprehend "the cat sat on the mat")

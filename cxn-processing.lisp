@@ -65,22 +65,26 @@
                        (attr-val construction :meaning)
                        (attr-val construction :lex-id))))))
 
+(defun hash-lex-id (node)
+  "We extract the values of the feature lex-id for each unit."
+  (loop for unit in (fcg-get-transient-unit-structure node)
+        for lex-id = (second (assoc 'lex-id (unit-body unit) :test #'string=))
+        when lex-id
+        collect it))
+
 (defmethod hash ((node cip-node)
-                 (mode (eql :hash-english-grammar)) ;; For using hashed construction sets in the root.
+                 (mode (eql :hash-english-grammar))
                  &key (label t))
-  "Checks the root and returns entities (for IRL meanings) or predicates."
-  (let* ((units (fcg-get-transient-unit-structure node))
-         (lex-ids (loop for unit in units
-                        for lex-id = (second (assoc 'lex-id (unit-body unit) :test #'string=))
-                        when lex-id collect it))
-         (strings (mapcar #'third (extract-strings (list (get-root units)))))
-         (meanings (loop for meaning in (extract-meaning (get-root units))
-                         when (beng::english-extract-label meaning)
-                         collect it)))
-    (if (and (member label (get-configuration (construction-inventory node) :hashed-labels))
-             (eql (car-direction (cipn-car node)) '<-))
-      (append strings lex-ids)
-      (append meanings lex-ids))))
+  "Checks the root and returns information for fast processing."
+  (cond ((string= label "HASHED-LEX-ID") (hash-lex-id node))
+        (t (let ((root (get-root (fcg-get-transient-unit-structure node))))
+             (if (eql (fcg-get-direction node) '<-)
+               ;; In parsing we are interested in strings
+               (mapcar #'third (extract-strings (list root)))
+               ;; In production we are interested in meaninsg
+               (loop for meaning in (extract-meaning root)
+                     when (beng::english-extract-label meaning)
+                     collect it))))))
 
 ;;;;; +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;;;;; Cxn-suppliers
@@ -105,8 +109,8 @@
                      (gethash nil (constructions-hash-table (construction-inventory node))))))
     (loop for cxn in (append hashed-constructions others)
           for cxn-label = (attr-val cxn :label)
-          when (or (eq label cxn-label)
-                   (and (listp cxn-label) (member label cxn-label)))
+          when (or (and (listp cxn-label) (find label cxn-label :test #'string=))
+                   (and (symbolp cxn-label) (string= label cxn-label)))
           collect cxn)))
 
 (defmethod create-cxn-supplier ((node cip-node) (mode (eql :hashed-english-grammar)))
@@ -120,15 +124,15 @@
        :all-constructions-of-current-label 
        (all-constructions-of-current-label (cxn-supplier parent)))
       ;; there is no parent, start from first label
-      (let ((labels (get-configuration (construction-inventory (cip node))
-                                       (if (eq (direction (cip node)) '->)
-                                         :production-order :parse-order))))
+      (let ((the-labels (get-configuration (construction-inventory (cip node))
+                                           (if (eq (direction (cip node)) '->)
+                                             :production-order :parse-order))))
         (make-instance 
          'cxn-supplier-for-english-grammar
-         :current-label (car labels)
-         :remaining-labels (cdr labels)
+         :current-label (car the-labels)
+         :remaining-labels (cdr the-labels)
          :all-constructions-of-current-label
-         (english-all-constructions-of-label-hashed node (car labels)))))))
+         (english-all-constructions-of-label-hashed node (car the-labels)))))))
 
 (defmethod next-cxn ((cxn-supplier cxn-supplier-for-english-grammar)
                      (node cip-node))
@@ -161,8 +165,8 @@
         ((remaining-labels cxn-supplier)
          ;; go to the next label
          
-         (setf (current-label cxn-supplier) (car (remaining-labels cxn-supplier))
-               (remaining-labels cxn-supplier) (cdr (remaining-labels cxn-supplier))
+         (setf (current-label cxn-supplier) (first (remaining-labels cxn-supplier))
+               (remaining-labels cxn-supplier) (rest (remaining-labels cxn-supplier))
                (all-constructions-of-current-label cxn-supplier)
                (english-all-constructions-of-label-hashed node (current-label cxn-supplier))
                (remaining-constructions cxn-supplier)
@@ -189,17 +193,18 @@
                          (direction (cip node)) :notify nil
                          :configuration (configuration (construction-inventory node))
                          :cxn-inventory cxn-inventory)
+            
             (setf succeeded-cars (append succeeded-cars these-succeeded-cars)
                   failed-cars (append failed-cars these-failed-cars))))
+            
         (loop for car in succeeded-cars
-              do (push (fcg::cip-add-child node car)
-                       nodes-to-queue)
-              when (fcg::apply-sequentially? node (car-applied-cxn car))
-              do (setf (fully-expanded? node) t) (return))
-
+              do (push (cip-add-child node car)
+                       nodes-to-queue))
+        
         (loop for car in failed-cars
-              do (push (fcg::cip-add-child node car :cxn-applied nil)
+              do (push (cip-add-child node car :cxn-applied nil)
                        failed-nodes)))
    when nodes-to-queue do (return nodes-to-queue)
    while cxns
    finally (setf (fully-expanded? node) t)))
+;; (comprehend "cat mat")

@@ -22,6 +22,7 @@
   (set-configuration cxn-inventory :parse-order order)
   (set-configuration (processing-cxn-inventory cxn-inventory)
                      :parse-order order))
+;; (set-parse-order '(hashed-string marked-morph zero-morph hashed-lex-id unhashed))
 
 (defun set-production-order (order &optional (cxn-inventory *fcg-constructions*))
   (set-configuration cxn-inventory :production-order order)

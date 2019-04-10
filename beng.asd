@@ -25,6 +25,7 @@
                #+lispworks :dev-tools)
   :serial t
   :components ((:file "package")
+               (:file "render-and-derender")
                (:module "signature"
                 :serial t
                 :components ((:file "config")

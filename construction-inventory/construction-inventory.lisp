@@ -24,6 +24,7 @@
                  (alignment sequence)
                  (arg-struct set-of-predicates)
                  (categories set)
+                 (constituents set)
                  (dependents set)
                  (footprints set)
                  (history set)
@@ -48,23 +49,21 @@
                       ;; ----------------------------------------------------------------------------------
                       ;; Construction sets
                       ;; ----------------------------------------------------------------------------------
-                      (:production-order hashed-meaning lex lex2 phrasal functional arg-cxn defaults unhashed hashed-string
-                       marked-morph zero-morph hashed-lex-id)
-                      (:parse-order HASHED-STRING MARKED-MORPH ZERO-MORPH HASHED-LEX-ID LEX REFERRING-EXPRESSIONS
-                       MARKED-PHRASAL UNMARKED-PHRASAL DEFAULTS FUNCTIONAL ARG-CXN UNHASHED LEX2)
-                      (:hashed-labels marked-morph zero-morph hashed-string lex lex2
+                      (:production-order hashed-meaning lex marked-morph zero-morph)
+                      (:parse-order hashed-string marked-morph zero-morph hashed-lex-id lex)
+                      (:hashed-labels marked-morph zero-morph hashed-string lex
                        hashed-meaning hashed-lex-id)
                       ;; ----------------------------------------------------------------------------------
                       ;; Render and De-rendering
                       ;; ----------------------------------------------------------------------------------
-                      (:de-render-mode . :english-with-dependency-parser)
+                      (:de-render-mode . :beng)
                       (:render-mode . :english-render)
                       ;; ----------------------------------------------------------------------------------
                       ;; Node and Goal tests
                       ;; ----------------------------------------------------------------------------------
                       (:node-tests :update-references
-                       :check-duplicate :restrict-nr-of-nodes :connected-structure)
-                      (:update-boundaries-feature . subunits)
+                       :check-duplicate :restrict-nr-of-nodes)
+                      (:update-boundaries-feature . constituents)
                       (:parse-goal-tests :no-applicable-cxns) ;:connected-semantic-network :connected-structure)
                       (:production-goal-tests :no-applicable-cxns :connected-structure)
                       ;; ----------------------------------------------------------------------------------
@@ -100,7 +99,7 @@
  :visualization-configurations ((:show-wiki-links-in-predicate-networks . nil)
                                 (:show-constructional-dependencies . nil)
                                 (:with-search-debug-data . t))
- :hierarchy-features (subunits dependents))
+ :hierarchy-features (constituents dependents subunits))
  
 ; ;; Lexical and morphpological constructions
 ; (load-lexicon :reduced reduced-lexicon))))
