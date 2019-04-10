@@ -1,4 +1,9 @@
 *.lisp~
 *.asd~
-/lexicon/
+/lexicon/adjectives/
+/lexicon/adverbs/
+/lexicon/nationalities/
+/lexicon/nouns/
+/lexicon/prepositions/
+/lexicon/verbs/
 *.xfasl
