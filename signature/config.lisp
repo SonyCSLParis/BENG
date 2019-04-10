@@ -22,7 +22,7 @@
   "Helper function for accessing files of the English grammar."
   (merge-pathnames  (make-pathname :directory  (cons :relative directory)
 				   :name name :type type)
-		    *beng-pathname*))
+		    cl-user::*beng-pathname*))
 ;; (beng-pathname)
   
 ;;;;; Configuration utilities for manipulating the configuration of the grammar.

@@ -19,8 +19,6 @@
 
 (ql:quickload :beng)
 
-;; (ql:quickload :dev-tools)
-
 (in-package :beng)
 
 ;; First time using the English grammar:

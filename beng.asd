@@ -51,9 +51,3 @@
                 :components ((:file "spacy-pos-tags")
                              (:file "constructional-network-aux")
                              (:file "construction-inventory")))))
-
-(in-package :beng)
-
-(defparameter *beng-pathname*
-  (make-pathname :directory (pathname-directory (or *load-truename*
-						    *compile-file-truename*))))

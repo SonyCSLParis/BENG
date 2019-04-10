@@ -13,3 +13,9 @@
         :network
         :type-hierarchies
         #+lispworks :dev-tools))
+
+(in-package :beng)
+
+(defparameter *beng-pathname*
+  (make-pathname :directory (pathname-directory (or *load-truename*
+						    *compile-file-truename*))))
