@@ -75,7 +75,7 @@
                         when lex-id collect it))
          (strings (mapcar #'third (extract-strings (list (get-root units)))))
          (meanings (loop for meaning in (extract-meaning (get-root units))
-                         when (english-extract-label meaning)
+                         when (beng::english-extract-label meaning)
                          collect it)))
     (if (and (member label (get-configuration (construction-inventory node) :hashed-labels))
              (eql (car-direction (cipn-car node)) '<-))
