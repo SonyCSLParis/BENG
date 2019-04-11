@@ -46,7 +46,6 @@
   (load-adjective "happy")) ;; Only loads the adjective happy.
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;;; Developing the Basic English Grammar:
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -67,4 +66,5 @@
 ; (toggle-monitor trace-fcg-search-process)
 
 ;; Some examples
-(comprehend "the cat sat on the mat")
+(comprehend-and-formulate "the cat")
+(comprehend "smelly cat")

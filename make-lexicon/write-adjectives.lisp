@@ -39,9 +39,8 @@
           (format out "~%               (lex-id ~a)" string)
           (format out "~%               (footprints (lex morph number))")
           (format out "~%               (parent ?parent)")
-          (format out "~%               (sem-cat (sem-class predicate))")
-          (format out "~%               (syn-cat (categories (adjective predicate))")
-          (format out "~%                        (syn-function adjectival)")
+          (format out "~%               (sem-cat (sem-class nationality))")
+          (format out "~%               (syn-cat (lex-class adjective)")
           (format out "~%                        (agreement ?agr)))")
           (format out "~%              <-")
           (format out "~%              (?~a-unit" string)
@@ -51,6 +50,7 @@
           (format out "~%             :disable-automatic-footprints t")
           (format out "~%             :attributes (:label (hashed-string hashed-meaning) :apply-fast t :meaning ~a :string ~s :pos (~s)))"
                    string (string-capitalize string) "ADJ"))))))
+;; (write-nationalities)
 
 
 (defun write-adjectives ()
@@ -71,9 +71,8 @@
           (format out "~%               (lex-id ~a)" string)
           (format out "~%               (footprints (lex morph number))")
           (format out "~%               (parent ?parent)")
-          (format out "~%               (sem-cat (sem-class predicate))")
-          (format out "~%               (syn-cat (categories (adjective predicate))")
-          (format out "~%                        (syn-function adjectival)")
+          (format out "~%               (sem-cat (sem-class category))")
+          (format out "~%               (syn-cat (lex-class adjective)")
           (format out "~%                        (agreement ?agr)))")
           (format out "~%              <-")
           (format out "~%              (?~a-unit" string)

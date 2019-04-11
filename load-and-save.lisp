@@ -23,6 +23,11 @@
                      (string= "lisp" (pathname-type p)))
                  (directory (beng-pathname :directory (list "lexicon" lex-class)))))
 
+(defun grammar-directory (class)
+  (remove-if-not #'(lambda(p)
+                     (string= "lisp" (pathname-type p)))
+                 (directory (beng-pathname :directory (list "grammar" class)))))
+
 (defun load-lexical-constructions (lex-class)
   (loop for path in (lex-directory lex-class)
         do (load path)))
@@ -95,7 +100,15 @@
 (defun load-determiners ()
   (load-lexicon '("determiners")))
 ;; (load-determiners)
-  
+
+(defun load-grammatical-constructions (class)
+  (loop for path in (grammar-directory class)
+        do (load path)))
+        
+(defun load-grammar (&optional (classes '("referring-expressions")))
+  (with-disabled-monitors
+    (loop for class in classes
+          do (load-grammatical-constructions class))))
 
 ;;;;;; Writing the lexicon.
 ;;;;;; ----------------------------------------------------------------
@@ -116,7 +129,11 @@
   (when write-files?
     (format t "~%Writing constructional definitions (this may take a few seconds)...")
     (write-lexicon))
-  (load-lexicon))
+  (make-beng-cxns)
+  (load-lexicon)
+  (load-grammar)
+  (set-data (blackboard *fcg-constructions*) :type-hierarchy *fusion-hierarchy*)
+  *fcg-constructions*)
 
 ;;;;;; Make and store an English lexicon image
 ;;;;;; ----------------------------------------------------------------

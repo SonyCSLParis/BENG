@@ -15,4 +15,42 @@
 ;;; ----------------------------------------------------------------------------
 
 (in-package :beng)
-
+                 
+(def-fcg-cxn NP<-DetNoun
+  ((?np
+    (referent ?ref))
+   <-
+   (?determiner
+    (parent ?np)
+    (args (?ref ?input))
+    (referent ?ref)
+    (syn-cat
+     (lex-class determiner))
+    --
+    (parent ?np)
+    (syn-cat
+     (agreement ?agr)
+     (lex-class determiner)))
+   (?noun
+    (syn-cat
+     (categories (noun)))
+    (args (?input ?context))
+    (referent ?ref)
+    (parent ?np)
+    --
+    (syn-cat
+     (categories (noun))
+     (agreement ?agr)
+     (lex-class common-noun))
+    (dependents (?determiner))
+    (parent ?np))
+   (?np
+    --
+    (HASH form ((meets ?determiner ?noun ?np)))
+    (syn-cat
+     (phrase-type noun-phrase)
+     (agreement ?agr))
+    (constituents (?determiner ?noun))
+    (head ?noun)))
+ :disable-automatic-footprints nil
+ :attributes (:label phrasal))

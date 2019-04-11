@@ -25,8 +25,7 @@
                (lex-id a)
                (parent ?parent)
                (sem-cat (sem-class selector))
-               (syn-cat (categories (article determiner))
-                        (lex-class article)
+               (syn-cat (lex-class article)
                         (agreement (- - + -))
                         (definite -)))
               <--
@@ -45,8 +44,7 @@
                (lex-id an)
                (parent ?parent)
                (sem-cat (sem-class selector))
-               (syn-cat (categories (article determiner))
-                        (lex-class article)
+               (syn-cat (lex-class determiner)
                         (agreement (- - + -))
                         (definite -)))
               <--
@@ -65,8 +63,7 @@
                (lex-id the)
                (parent ?parent)
                (sem-cat (sem-class selector))
-               (syn-cat (categories (article determiner))
-                        (lex-class article)
+               (syn-cat (lex-class determiner)
                         (agreement (- - ?3sg ?pl))
                         (definite +)))
               <--

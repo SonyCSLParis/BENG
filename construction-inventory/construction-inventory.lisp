@@ -49,10 +49,9 @@
                       ;; ----------------------------------------------------------------------------------
                       ;; Construction sets
                       ;; ----------------------------------------------------------------------------------
-                      (:production-order hashed-meaning lex marked-morph zero-morph)
-                      (:parse-order hashed-string marked-morph zero-morph hashed-lex-id lex)
-                      (:hashed-labels marked-morph zero-morph hashed-string lex
-                       hashed-meaning hashed-lex-id)
+                      (:production-order hashed-meaning phrasal hashed-lex-id)
+                      (:parse-order hashed-string hashed-lex-id phrasal)
+                      (:hashed-labels hashed-string hashed-meaning hashed-lex-id)
                       ;; ----------------------------------------------------------------------------------
                       ;; Render and De-rendering
                       ;; ----------------------------------------------------------------------------------

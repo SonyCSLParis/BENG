@@ -43,10 +43,12 @@
                   Actor Undergoer Emphasized-Role
                   ;; Grammatical Functions
                   Subject Object Dative Oblique
-                  ;; Parts-of-Speech
-                  Noun CommonNoun ProperNoun
+                  ;; Parts-of-Speech / Functions
+                  Noun Common-Noun ProperNoun
                   Verb Aux Lex-Verb
-                  ) *fusion-hierarchy*)
+                  Determiner article
+                  deverbal-adjective)
+                *fusion-hierarchy*)
 
 ;; Argument Roles
 (dolist (arg-role '(Actor Undergoer Emphasized-Role))
@@ -58,10 +60,13 @@
 
 ;; Parts-of-Speech
 (progn
-  (dolist (pos '(Noun Verb))
+  (dolist (pos '(Noun Deverbal-Adjective Determiner))
     (add-link pos 'Top *fusion-hierarchy*))
-  (dolist (pos '(CommonNoun ProperNoun))
+  (add-link 'Verb 'Deverbal-Adjective *fusion-hierarchy* :weight 1.0)
+  (dolist (pos '(Common-Noun ProperNoun))
     (add-link pos 'Noun *fusion-hierarchy* :weight 1.0))
   (dolist (pos '(Aux Lex-Verb))
-    (add-link pos 'Verb *fusion-hierarchy* :weight 1.0)))
+    (add-link pos 'Verb *fusion-hierarchy* :weight 1.0))
+  (dolist (pos '(article))
+    (add-link pos 'Determiner *fusion-hierarchy* :weight 1.0)))
            
