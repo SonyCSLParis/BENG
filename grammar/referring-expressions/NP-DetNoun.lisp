@@ -55,3 +55,5 @@
 ;; (comprehend "the cat")
 ;; (set-data (blackboard *fcg-constructions*) :type-hierarchy *fusion-hierarchy*)
 ;; (fcg-show-cxn 'np-detnoun-cxn)
+;; (set-parse-order '(hashed-string hashed-lex-id phrasal))
+

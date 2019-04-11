@@ -33,7 +33,9 @@
 (build-grammar :write-files? nil)
 
 ;; If you want to save and restore an image of your grammar (this will be
-;; stored in the "models" folder of your BENG repository):
+;; stored in the "models" folder of your BENG repository). Building the grammar
+;; is as fast as restoring it, but restoring guarantees you start from the
+;; same grammar as your last saved session.
 ;; -----------------------------------------------------------------------------
 (save-beng *fcg-constructions* :name "beng")
 (restore-beng :name "beng")
@@ -67,4 +69,4 @@
 
 ;; Some examples
 (comprehend-and-formulate "the cat")
-(comprehend "smelly cat")
+(comprehend-and-formulate "smelly cat")
