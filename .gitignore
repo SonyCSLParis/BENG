@@ -7,3 +7,4 @@
 /lexicon/prepositions/
 /lexicon/verbs/
 *.xfasl
+*.lisp\#
