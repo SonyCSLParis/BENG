@@ -99,18 +99,4 @@
  :visualization-configurations ((:show-wiki-links-in-predicate-networks . nil)
                                 (:show-constructional-dependencies . nil)
                                 (:with-search-debug-data . t))
- :hierarchy-features (constituents dependents subunits))
- 
-; ;; Lexical and morphpological constructions
-; (load-lexicon :reduced reduced-lexicon))))
-
-;(defun build-hybrid-english-grammar ()
-;  (make-files-for-grammar :reduced t)
-;  (let ((inventory (load-english-lexicon-image :use-image nil :reduced-lexicon t)))
-;    (load-predicating-expressions)
-;    (load-tutored-constructions) 
-;    inventory))
-
-;(defun parse-sentence (sentence)
-;  (activate-monitor trace-fcg)
-;  (comprehend-with-multiviews sentence))
+ :hierarchy-features (constituents dependents))
