@@ -105,7 +105,8 @@
   (loop for path in (grammar-directory class)
         do (load path)))
         
-(defun load-grammar (&optional (classes '("referring-expressions")))
+(defun load-grammar (&optional (classes '("referring-expressions"
+                                          "argument-structure")))
   (with-disabled-monitors
     (loop for class in classes
           do (load-grammatical-constructions class))))
@@ -132,8 +133,11 @@
   (make-beng-cxns)
   (load-lexicon)
   (load-grammar)
-  (set-data (blackboard *fcg-constructions*) :type-hierarchy *fusion-hierarchy*)
+  (set-data (blackboard *fcg-constructions*) :fusion-hierarchy *fusion-hierarchy*)
   *fcg-constructions*)
+
+;; (comprehend "the window broke")
+
 
 ;;;;;; Make and store an English lexicon image
 ;;;;;; ----------------------------------------------------------------

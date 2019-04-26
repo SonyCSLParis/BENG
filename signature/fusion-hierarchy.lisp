@@ -24,49 +24,57 @@
 ;;; Goldberg, Adele E. (1995). Constructions: A Construction Grammar Approach to Argument
 ;;;     Structure Constructions. Chicago: Chicago University Press.
 ;;;
-;;; For more about the Category Hierarchies, see chapter of:
+;;; The fusion hierarchy is a severely simplified version of the more general
+;;; Category Hierarchy system by Paul Van Eecke. If you need to use its capabilities,
+;;; please check out:
 ;;; ----------------------------------------------------------------------------
 ;;; Van Eecke, Paul (2018). Generalisation and Specialisation Operators for Computational
 ;;;     Construction Grammar and their Application for Evolutionary Linguistics Research.
 ;;;     PhD Thesis. Brussels: Vrije Universiteit Brussel.
 ;;;     https://cris.vub.be/files/39711319/Paul_Van_Eecke_phd.pdf
 ;;;
-;;;
 
 (in-package :beng)
 
 (defparameter *fusion-hierarchy* nil "Captures the relations for the fusion hierarchy.")
+(setf *fusion-hierarchy* (make-hash-table))
 
-(setf *fusion-hierarchy* (make-instance 'type-hierarchy))
-(add-categories '(Top
-                  ;; Argument Roles
-                  Actor Undergoer Emphasized-Role
-                  ;; Grammatical Functions
-                  Subject Object Dative Oblique
-                  ;; Parts-of-Speech / Functions
-                  Noun Common-Noun ProperNoun
-                  Verb Aux Lex-Verb
-                  Determiner article
-                  deverbal-adjective)
-                *fusion-hierarchy*)
+(defun get-fusion-hierarchy (cxn-inventory)
+  (if cxn-inventory
+    (get-data (blackboard cxn-inventory) :fusion-hierarchy)
+    *fusion-hierarchy*))
 
+(defun fusion-add-parent (entry parent fusion-hierarchy)
+  (setf (gethash entry fusion-hierarchy)
+        (pushnew parent (gethash entry fusion-hierarchy))))
+
+(defun fuseable-p (x y fusion-hierarchy)
+  "Checks whether x can be fused with y."
+  (cond ((null x) nil)
+        ((symbolp x) (fuseable-p (gethash x fusion-hierarchy) y fusion-hierarchy))
+        ((member y x) t)
+        (t
+         (fuseable-p (append (rest x) (gethash x fusion-hierarchy)) y fusion-hierarchy))))
+
+;; Now we start filling the fusion hierarchy:
+;; ----------------------------------------------------------------------------
 ;; Argument Roles
 (dolist (arg-role '(Actor Undergoer Emphasized-Role))
-  (add-link arg-role 'Top *fusion-hierarchy* :weight 1.0))
+  (fusion-add-parent arg-role 'Top *fusion-hierarchy*))
 
 ;; Grammatical Functions
 (dolist (grammatical-function '(Subject Object Dative Oblique))
-  (add-link grammatical-function 'Top *fusion-hierarchy* :weight 1.0))
+  (fusion-add-parent grammatical-function 'Top *fusion-hierarchy*))
 
 ;; Parts-of-Speech
 (progn
   (dolist (pos '(Noun Deverbal-Adjective Determiner))
-    (add-link pos 'Top *fusion-hierarchy*))
-  (add-link 'Verb 'Deverbal-Adjective *fusion-hierarchy* :weight 1.0)
+    (fusion-add-parent pos 'Top *fusion-hierarchy*))
+  (fusion-add-parent 'Verb 'Deverbal-Adjective *fusion-hierarchy*)
   (dolist (pos '(Common-Noun ProperNoun))
-    (add-link pos 'Noun *fusion-hierarchy* :weight 1.0))
+    (fusion-add-parent pos 'Noun *fusion-hierarchy*))
   (dolist (pos '(Aux Lex-Verb))
-    (add-link pos 'Verb *fusion-hierarchy* :weight 1.0))
+    (fusion-add-parent pos 'Verb *fusion-hierarchy*))
   (dolist (pos '(article))
-    (add-link pos 'Determiner *fusion-hierarchy* :weight 1.0)))
+    (fusion-add-parent pos 'Determiner *fusion-hierarchy*)))
            

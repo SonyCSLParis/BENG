@@ -11,7 +11,6 @@
         :monitors
         :meta-layer-learning
         :network
-        :type-hierarchies
         #+lispworks :dev-tools))
 
 (in-package :beng)

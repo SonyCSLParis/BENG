@@ -20,7 +20,6 @@
   :depends-on (:fcg
                :xmls
                :nlp-tools
-               :category-hierarchies
                :fcg-hybrids
                #+lispworks :dev-tools)
   :serial t
@@ -30,6 +29,7 @@
                 :serial t
                 :components ((:file "config")
                              (:file "fusion-hierarchy")
+                             (:file "fusion-matching")
                              (:file "semantics")))
                (:file "utilities")
                (:file "cxn-processing")    

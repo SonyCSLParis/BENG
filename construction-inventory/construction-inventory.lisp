@@ -16,7 +16,7 @@
 
 (in-package :beng)
 
-(def-fcg-constructions-with-type-hierarchy
+(def-fcg-constructions 
  BENG
  :cxn-inventory-type constructional-network-inventory
  :feature-types (;; Make sure these are exported from the :fcg package. See feature-types.lisp
@@ -39,7 +39,6 @@
                  (syn-roles set-of-predicates)
                  (form set-of-predicates)
                  (meaning set-of-predicates))
- :type-hierarchy *fusion-hierarchy*
  :fcg-configurations (;; Form predicates
                       (:form-predicates meets before fields first last)
                       ;; ----------------------------------------------------------------------------------
@@ -49,8 +48,8 @@
                       ;; ----------------------------------------------------------------------------------
                       ;; Construction sets
                       ;; ----------------------------------------------------------------------------------
-                      (:production-order hashed-meaning phrasal hashed-lex-id)
-                      (:parse-order hashed-string hashed-lex-id phrasal)
+                      (:production-order hashed-meaning phrasal arg-cxn hashed-lex-id)
+                      (:parse-order hashed-string hashed-lex-id phrasal arg-cxn)
                       (:hashed-labels hashed-string hashed-meaning hashed-lex-id)
                       ;; ----------------------------------------------------------------------------------
                       ;; Render and De-rendering
@@ -90,6 +89,7 @@
                       ;; ----------------------------------------------------------------------------------
                       ;; Miscellaneous
                       ;; ----------------------------------------------------------------------------------
+                      (:draw-meaning-as-network . t)
                       (:shuffle-cxns-before-application . nil)
                       ;; For learning
                       (:consolidate-repairs . t))

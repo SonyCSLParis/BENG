@@ -22,13 +22,14 @@
   (set-configuration cxn-inventory :parse-order order)
   (set-configuration (processing-cxn-inventory cxn-inventory)
                      :parse-order order))
-;; (set-parse-order '(hashed-string marked-morph zero-morph hashed-lex-id phrasal phrasal unhashed))
+;; (set-parse-order '(hashed-string hashed-lex-id phrasal arg-cxn))
+
 
 (defun set-production-order (order &optional (cxn-inventory *fcg-constructions*))
   (set-configuration cxn-inventory :production-order order)
   (set-configuration (processing-cxn-inventory cxn-inventory)
                      :production-order order))
-;; (set-production-order '(hashed-meaning lex phrasal hashed-lex-id marked-morph zero-morph))
+;; (set-production-order '(hashed-meaning phrasal arg-cxn hashed-lex-id))
 
 ;;;;; English grammar utilities.
 ;;;;; --------------------------------------------------------------------------------

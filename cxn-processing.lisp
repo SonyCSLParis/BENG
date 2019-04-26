@@ -68,7 +68,8 @@
 (defun hash-lex-id (node)
   "We extract the values of the feature lex-id for each unit."
   (loop for unit in (fcg-get-transient-unit-structure node)
-        for lex-id = (second (assoc 'lex-id (unit-body unit) :test #'string=))
+        for lex-id = (or (second (assoc 'sem-frame (unit-body unit) :test #'string=))
+                         (second (assoc 'lex-id (unit-body unit) :test #'string=))) ;; lex-id should disappear from construction.
         when lex-id
         collect it))
 

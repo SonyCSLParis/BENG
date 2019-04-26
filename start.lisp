@@ -54,19 +54,22 @@
 
 ;; If you use LispWorks on MacOSx, you can also use the following FCG developer tools:
 ;; ------------------------------------------------------------------------------------------------------------
-;; (dev-construction-browser :mixed)       ; See demo at http://remivantrijp.eu/construction-browser/ 
-;; (dev-construction-bank-builder)         ; See demo at http://www.remivantrijp.eu/construction-bank-builder/
-;; (dev-construction-tutor :package :beng) ; See demo at http://www.remivantrijp.eu/construction-tutor/
+;; (dev-construction-browser :editor)       ; See demo at http://remivantrijp.eu/construction-browser/ 
+;; (dev-construction-bank-builder)          ; See demo at http://www.remivantrijp.eu/construction-bank-builder/
+;; (dev-construction-tutor :package :beng)  ; See demo at http://www.remivantrijp.eu/construction-tutor/
 
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;;; Start testing:
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 ;; For turning the FCG web interace on and off (only use one monitor at the time):
-(toggle-monitor trace-fcg)                    ; Recommended
-; (toggle-monitor trace-fcg-debugging)        
+(toggle-monitor trace-fcg) ; Recommended
+; (toggle-monitor trace-fcg-debugging)
 ; (toggle-monitor trace-fcg-search-process)
 
 ;; Some examples
+(comprehend "the cat")
+(comprehend "the window broke")
 (comprehend-and-formulate "the cat")
 (comprehend-and-formulate "smelly cat")
+(comprehend-and-formulate "the opened windows")
