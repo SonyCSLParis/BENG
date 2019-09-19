@@ -115,6 +115,43 @@
           (append (left-pole-structure transient-structure) structure-to-append))
     transient-structure))
 
+;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;; THEME-RHEME STRUCTURE
+;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+(defgeneric represent-theme-rheme-structure (analysis transient-structure key cxn-inventory &optional language))
+
+(defmethod represent-theme-rheme-structure ((analysis list)
+                                            (transient-structure coupled-feature-structure)
+                                            (key t) ;; By default we assume that we have to translate dependencies
+                                            (cxn-inventory t)
+                                            &optional (language t)) ;; By default we assume English
+  (let* ((clausal-unit-pattern '(?unit
+                                 (syn-cat (==1 (clause-type ?clause-type)))
+                                 (constituents ?constituents)))
+         (unit-structure (fcg-get-transient-unit-structure transient-structure))
+         (boundaries (fcg-get-boundaries unit-structure)))
+    (setf (left-pole-structure transient-structure)
+          (loop for unit in unit-structure
+                for match = (first (unify-units clausal-unit-pattern unit (list +no-bindings+)
+                                          :cxn-inventory cxn-inventory))
+                collect (if match
+                          (let* ((subunit-names (rest (assoc '?constituents match)))
+                                 (theme (loop for boundary in boundaries
+                                              when (member (first boundary) subunit-names)
+                                              return (first boundary)))
+                                 (rheme (remove theme subunit-names)))
+                            `(,(unit-name unit)
+                              (theme-rheme ((theme ,theme)
+                                            (rheme ,rheme)))
+                              ,@(unit-body unit)))
+                          unit)))
+    transient-structure))
+
+;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+;; DE-RENDER
+;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 (defmethod de-render ((utterance string) (mode (eql :beng))
                       &key cxn-inventory &allow-other-keys)
   (declare (ignorable mode))
@@ -128,5 +165,10 @@
     ;; Step 3: We flesh out the constituency analysis by adding features and values
     (setf transient-structure
           (represent-constituent-structure dependency-tree transient-structure t cxn-inventory :english))
+    ;; Step 4: We represent the theme-rheme structure of each constituent if possible.
+    (setf transient-structure
+          (represent-theme-rheme-structure dependency-tree transient-structure t cxn-inventory :english))
     ;; Finally we return the transient structure.
     transient-structure))
+
+;; (comprehend "Luc Steels is the founder of Sony Computer Science Laboratories Paris, which is located in Paris.")

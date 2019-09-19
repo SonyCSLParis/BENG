@@ -69,7 +69,8 @@
 
 
 (comprehend "The success of any scientific enterprise depends largely on how well it describes its empirical facts.")
-
+(comprehend "Dr Hiroaki Kitano is the director of Sony Computer Science Laboratories.")
+(comprehend "Dr Luc Steels is the founder of the Sony Computer Science Laboratories Paris.")
 
 
 ;; Some examples

@@ -29,6 +29,7 @@
                  (footprints set)
                  (history set)
                  (subunits set)
+                 (rheme set)
                  (boundaries set-of-predicates)
                  (agreement sequence)
                  (args sequence)
