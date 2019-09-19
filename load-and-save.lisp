@@ -34,6 +34,7 @@
 
 (defun load-lexicon (&optional (lex-classes '("adjectives"
                                               "adverbs"
+                                              "auxiliaries"
                                               "determiners"
                                               "nationalities"
                                               "nouns"
@@ -42,7 +43,7 @@
   (with-disabled-monitors
     (loop for lex-class in lex-classes
           do (load-lexical-constructions lex-class))))
- 
+
 (defun load-adjective (word)
   (load (beng-pathname :directory '("lexicon" "adjectives")
                        :name word
@@ -107,9 +108,12 @@
         
 (defun load-grammar (&optional (classes '("referring-expressions"
                                           "argument-structure")))
+                                          ;;"tam"
+                                          ;;"voice")))
   (with-disabled-monitors
     (loop for class in classes
           do (load-grammatical-constructions class))))
+;; (load-grammar)
 
 ;;;;;; Writing the lexicon.
 ;;;;;; ----------------------------------------------------------------

@@ -67,9 +67,14 @@
 ; (toggle-monitor trace-fcg-debugging)
 ; (toggle-monitor trace-fcg-search-process)
 
+
+(comprehend "The success of any scientific enterprise depends largely on how well it describes its empirical facts.")
+
+
+
 ;; Some examples
 (comprehend "the cat")
-(comprehend "the window broke")
+(comprehend-and-formulate "the window broke")
 (comprehend-and-formulate "the cat")
 (comprehend-and-formulate "smelly cat")
 (comprehend-and-formulate "the opened windows")

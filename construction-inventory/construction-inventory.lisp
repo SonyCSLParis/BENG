@@ -48,8 +48,8 @@
                       ;; ----------------------------------------------------------------------------------
                       ;; Construction sets
                       ;; ----------------------------------------------------------------------------------
-                      (:production-order hashed-meaning phrasal arg-cxn hashed-lex-id)
-                      (:parse-order hashed-string hashed-lex-id phrasal arg-cxn)
+                      (:production-order hashed-meaning voice phrasal arg-cxn hashed-lex-id)
+                      (:parse-order hashed-string hashed-lex-id voice marked-phrasal unmarked-phrasal arg-cxn)
                       (:hashed-labels hashed-string hashed-meaning hashed-lex-id)
                       ;; ----------------------------------------------------------------------------------
                       ;; Render and De-rendering
@@ -67,6 +67,10 @@
                       ;; ----------------------------------------------------------------------------------
                       ;; NLP Tools
                       ;; ----------------------------------------------------------------------------------
+                      (:preprocessing-steps-for-dependency-parser
+                       dependency-string-append-named-entities
+                       dependency-string-append-compounds-in-np
+                       dependency-string-append-compounds)
                       (:preprocessing-tools
                        (:postagger-results #'get-penelope-pos-tags) ;;#'get-stanford-and-universal-pos-tags)
                        (:named-entities #'get-penelope-named-entities))

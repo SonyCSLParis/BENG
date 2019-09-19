@@ -49,5 +49,5 @@
     (constituents (?deverbal-adjective ?noun))
     (head ?noun)))
  :disable-automatic-footprints nil
- :attributes (:label phrasal))
+ :attributes (:label phrasal marked-phrasal))
 ;; (comprehend "the opened window")

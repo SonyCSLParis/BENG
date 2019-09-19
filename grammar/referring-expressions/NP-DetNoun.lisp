@@ -51,7 +51,7 @@
     (constituents (?determiner ?noun))
     (head ?noun)))
  :disable-automatic-footprints nil
- :attributes (:label phrasal))
+ :attributes (:label phrasal marked-phrasal))
 ;; (comprehend "the cat")
 ;; (set-data (blackboard *fcg-constructions*) :type-hierarchy *fusion-hierarchy*)
 ;; (fcg-show-cxn 'np-detnoun-cxn)

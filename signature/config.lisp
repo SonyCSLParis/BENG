@@ -31,11 +31,13 @@
   (set-configuration cxn-inventory :parse-order order)
   (set-configuration (processing-cxn-inventory cxn-inventory)
                      :parse-order order))
+;; (set-parse-order '(hashed-string hashed-lex-id arg-cxn marked-phrasal unmarked-phrasal))
 
 (defun set-production-order (order &optional (cxn-inventory *fcg-constructions*))
   (set-configuration cxn-inventory :production-order order)
   (set-configuration (processing-cxn-inventory cxn-inventory)
                      :production-order order))
+;; (set-production-order '(hashed-meaning arg-cxn phrasal hashed-lex-id))
 
 ;;;;; Header used for writing files.
 ;;;;; --------------------------------------------------------------------------------

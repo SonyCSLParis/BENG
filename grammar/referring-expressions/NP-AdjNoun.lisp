@@ -50,5 +50,5 @@
     (constituents (?adjective ?noun))
     (head ?noun)))
  :disable-automatic-footprints nil
- :attributes (:label phrasal))
+ :attributes (:label phrasal marked-phrasal))
 ;; (comprehend-and-formulate "smelly cat")

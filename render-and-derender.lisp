@@ -71,31 +71,30 @@
   (let* ((boundaries (fcg-get-boundaries transient-structure))
          (word-specs (make-word-specs-for-boundaries boundaries dependency-tree))
          (structure-to-append (loop for word-spec in word-specs
-                                    for dependents =
+                                    for dependent-word-specs =
                                     (loop for other-word-spec in word-specs
                                           when (and (not (equal word-spec other-word-spec))
                                                     (= (word-dependency-spec-head-id other-word-spec)
                                                        (word-dependency-spec-node-id word-spec)))
-                                          collect (word-dependency-spec-unit-name other-word-spec))
+                                          collect other-word-spec)
+                                    for dependents = (mapcar #'word-dependency-spec-unit-name dependent-word-specs)
                                     for functional-structure =
-                                    (when (string= (word-dependency-spec-syn-role word-spec)
-                                                   "ROOT")
-                                      (loop for other-word-spec in word-specs
-                                            for function = (word-dependency-spec-syn-role
-                                                            other-word-spec)
-                                            when (core-function-p function)
-                                            collect (cond
-                                                     ((subject-p function)
-                                                      `(subject
-                                                        ,(word-dependency-spec-unit-name
-                                                          other-word-spec)))
-                                                     ((object-p function)
-                                                      `(object ,(word-dependency-spec-unit-name
-                                                                 other-word-spec)))
-                                                     (t
-                                                      `(indirect-object
-                                                        ,(word-dependency-spec-unit-name
-                                                          other-word-spec))))))
+                                    (loop for other-word-spec in dependent-word-specs
+                                          for function = (word-dependency-spec-syn-role
+                                                          other-word-spec)
+                                          when (core-function-p function)
+                                          collect (cond
+                                                   ((subject-p function)
+                                                    `(subject
+                                                      ,(word-dependency-spec-unit-name
+                                                        other-word-spec)))
+                                                   ((object-p function)
+                                                    `(object ,(word-dependency-spec-unit-name
+                                                               other-word-spec)))
+                                                   (t
+                                                    `(indirect-object
+                                                      ,(word-dependency-spec-unit-name
+                                                        other-word-spec)))))
                                     collect
                                     (make-unit :name (word-dependency-spec-unit-name word-spec)
                                                :features `((dependents ,dependents)

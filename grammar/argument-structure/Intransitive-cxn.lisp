@@ -17,7 +17,12 @@
 (in-package :beng)
 
 (def-fcg-cxn Intransitive-cxn
-  (nil
+  ((?clause
+    (constituents (?vp))
+    (syn-cat (clause-type intransitive)))
+   (?vp
+    (constituents (?verb))
+    (tam ?tam))
    <-
    (?vp
     --
@@ -25,29 +30,25 @@
     (parent ?clause)
     (syn-cat (phrase-type VP)))
    (?verb
-    (parent ?vp)
+    (HASH meaning ((frame-type event intransitive-frame ?ev-ref ?ref)))
     (arg-struct ((role ?ref Emphasized-Role)))
-    (referent ?ev)
+    (parent ?vp)
+    (referent ?ev-ref)
     (sem-frame verb)
     --
+    (functional-structure ((subject ?subject)))
+    (dependents (?subject))
     (parent ?vp)
     (voice active)
-    (sem-frame verb)
-    (arg-struct ((role ?ref Emphasized-Role)))
-    (syn-cat (agreement ?agr))
-    (functional-structure
-     ((subject ?subject)))
-    (dependents (?subject)))
+    (syn-cat (agreement ?agr)))
    (?subject
     (parent ?np)
-    (syn-cat
-     (lex-class common-noun))
+    (syn-cat (lex-class common-noun))
     (referent ?ref)
     --
     (parent ?np)
-    (syn-cat
-    (agreement ?agr)
-     (lex-class common-noun))))
+    (syn-cat (agreement ?agr)
+             (lex-class common-noun))))
    :disable-automatic-footprints nil
    :feature-types ((functional-structure sequence))
    :attributes (:label arg-cxn))
