@@ -72,9 +72,9 @@
                        dependency-string-append-named-entities
                        dependency-string-append-compounds-in-np
                        dependency-string-append-compounds)
-                      (:preprocessing-tools
-                       (:postagger-results #'get-penelope-pos-tags) ;;#'get-stanford-and-universal-pos-tags)
-                       (:named-entities #'get-penelope-named-entities))
+                      ;(:preprocessing-tools
+                      ; (:postagger-results #'get-penelope-pos-tags) ;;#'get-stanford-and-universal-pos-tags)
+                      ; (:named-entities #'get-penelope-named-entities))
                       ;; ----------------------------------------------------------------------------------
                       ;; Construction Supplier
                       ;; ----------------------------------------------------------------------------------
@@ -103,4 +103,6 @@
  :visualization-configurations ((:show-wiki-links-in-predicate-networks . nil)
                                 (:show-constructional-dependencies . nil)
                                 (:with-search-debug-data . t))
- :hierarchy-features (constituents dependents))
+ :hierarchy-features (constituents dependents)
+
+ (set-data (blackboard *fcg-constructions*) :fusion-hierarchy *fusion-hierarchy*))

@@ -158,7 +158,7 @@
   ;; Step 1: We obtain a syntactic dependency analysis from SpaCy.
   (multiple-value-bind (dependency-tree utterance-as-list transient-structure)
       (preprocess-using-dependency-tree utterance :cxn-inventory cxn-inventory)
-    (declare (ignorable utterance-as-list))
+    (set-data transient-structure :utterance-as-list utterance-as-list)
     ;; Step 2: We flesh out the dependency analysis by adding features and values
     (setf transient-structure
           (represent-functional-structure dependency-tree transient-structure t :english))
