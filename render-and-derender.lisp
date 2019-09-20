@@ -52,7 +52,6 @@
                                          (handle-functional-unit "ROOT" dependency-root
                                                                  (make-const 'unit)
                                                                  '- word-specs units-without-root)))))
-    (setf *my-test* word-specs)
     (setf (left-pole-structure transient-structure)
           (cons (get-root (left-pole-structure transient-structure))
                 expanded-unit-structure))
@@ -104,6 +103,7 @@
                                     collect
                                     (make-unit :name (word-dependency-spec-unit-name word-spec)
                                                :features `((dependents ,dependents)
+                                                           (pos ,(word-dependency-spec-pos-tag word-spec))
                                                            ,@(if functional-structure
                                                                `((functional-structure ,functional-structure)
                                                                  ,@(dolist (other-spec word-specs)
@@ -175,6 +175,9 @@
     (setf transient-structure
           (represent-theme-rheme-structure dependency-tree transient-structure t cxn-inventory :english))
     ;; Finally we return the transient structure.
+    (set-data transient-structure :postagger-results (loop for dependent in dependency-tree
+                                                           collect (list (nlp-tools:dp-get-token dependent)
+                                                                         (nlp-tools:dp-get-tag dependent))))
     transient-structure))
 
 ;; (comprehend "Luc Steels is the founder of Sony Computer Science Laboratories Paris, which is located in Paris.")

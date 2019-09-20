@@ -102,6 +102,7 @@
 
 ;; Some examples
 (comprehend "the window broke")
+(beng-comprehend "the scientist presented groundbreaking work")
 
 ;; Formulation is currently only possible for a small number of constructions, so
 ;; it is better to test only comprehension.
