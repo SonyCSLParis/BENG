@@ -34,3 +34,24 @@
          (boundaries-theme (assoc (rest (get-binding '?theme bindings)) boundaries)))
     (subseq (get-data transient-structure :utterance-as-list) (second boundaries-theme) (third boundaries-theme))))
 ;; (beng-get-theme *saved-cfs*)
+
+(defun beng-get-rheme (transient-structure &optional (cxn-inventory *fcg-constructions*))
+  "Return the rheme."
+    (let* ((units (fcg-get-transient-unit-structure transient-structure))
+           (boundaries (fcg-get-boundaries units))
+           (main-clause-pattern `(?clause
+                                  (syn-cat (==1 (is-matrix-clause +)))
+                                  (theme-rheme (==1 (theme ?theme)))))
+           ;; Step 1: We identify the main clause and get bindings for the info we want.
+           (bindings (loop for unit in units
+                           for match = (fcg::unify-units main-clause-pattern
+                                                         unit
+                                                         (list +no-bindings+)
+                                                         :cxn-inventory cxn-inventory)
+                           when match
+                           return (first match)))
+           ;; Step 2: We retrieve the boundaries of the theme.
+           (boundaries-theme (assoc (rest (get-binding '?theme bindings)) boundaries)))
+      (subseq (get-data transient-structure :utterance-as-list) (third boundaries-theme))))
+
+  

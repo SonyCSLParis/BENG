@@ -19,6 +19,8 @@
 (ql:quickload :beng)
 (in-package :beng)
 
+;;; *** IMPORTANT: BENG requires an internet connection to work!!! ***
+
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;;; Loading the Basic English Grammar:
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -33,9 +35,12 @@
 ;; "h1" and "h2" to switch between a constituency- and dependency-view on
 ;; the transient structure.
 
-;; You can also query the result:
+;; You can also query the result.
+;; The function #'beng-comprehend saves the result in the global parameter *saved-cfs*, which you can
+;; also manually set through the web interface of FCG.
 (beng-get-named-entities *saved-cfs*)        ;; What are the named entities?
 (beng-get-theme *saved-cfs*)                 ;; About who/what does the sentence saying about something?
+(beng-get-rheme *saved-cfs*)                 ;; What does the sentence say about the theme?
 (beng-get-constituent-structure *saved-cfs*) ;; A bracketed notation of the constituent structure.
 (beng-identify-subclauses *saved-cfs*)       ;; Identify subclauses.
 
