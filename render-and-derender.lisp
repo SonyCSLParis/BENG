@@ -41,12 +41,18 @@
          (units-without-root (loop for unit in (fcg-get-transient-unit-structure transient-structure)
                                    unless (string= "ROOT" (unit-name unit))
                                    collect unit))
-         (expanded-unit-structure (if (verbal-root-p dependency-root)
-                                    (handle-verbal-root dependency-root word-specs 'matrix-clause '-
-                                                        (make-const "clause") units-without-root)
-                                    (handle-functional-unit "ROOT" dependency-root
-                                                            (make-const 'unit)
-                                                            '- word-specs units-without-root))))
+         (expanded-unit-structure (cond ((verbal-root-p dependency-root)
+                                         (handle-verbal-root dependency-root word-specs 'matrix-clause '-
+                                                             (make-const "clause") units-without-root))
+                                        ((word-dependency-spec-conjunct-type dependency-root)
+                                         (handle-functional-conjuncts "ROOT" dependency-root
+                                                                      (make-const 'unit)
+                                                                      '- word-specs units-without-root))
+                                        (t
+                                         (handle-functional-unit "ROOT" dependency-root
+                                                                 (make-const 'unit)
+                                                                 '- word-specs units-without-root)))))
+    (setf *my-test* word-specs)
     (setf (left-pole-structure transient-structure)
           (cons (get-root (left-pole-structure transient-structure))
                 expanded-unit-structure))
@@ -54,7 +60,7 @@
       (setf (left-pole-structure transient-structure)
             (cons new-root expanded-unit-structure))
       transient-structure)))
-
+;; (comprehend "I saw flowers and toys.")
 
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;; FUNCTIONAL STRUCTURE

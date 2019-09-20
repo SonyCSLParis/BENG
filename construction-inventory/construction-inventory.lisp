@@ -71,10 +71,11 @@
                       (:preprocessing-steps-for-dependency-parser
                        dependency-string-append-named-entities
                        dependency-string-append-compounds-in-np
-                       dependency-string-append-compounds)
-                      ;(:preprocessing-tools
-                      ; (:postagger-results #'get-penelope-pos-tags) ;;#'get-stanford-and-universal-pos-tags)
-                      ; (:named-entities #'get-penelope-named-entities))
+                       dependency-string-append-compounds
+                       dependency-promote-conjuncts)
+                      (:preprocessing-tools
+                       (:postagger-results #'get-penelope-pos-tags) ;;#'get-stanford-and-universal-pos-tags)
+                       (:named-entities #'get-penelope-named-entities))
                       ;; ----------------------------------------------------------------------------------
                       ;; Construction Supplier
                       ;; ----------------------------------------------------------------------------------

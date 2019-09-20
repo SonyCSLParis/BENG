@@ -55,4 +55,6 @@
                (:module "experts"
                 :serial t
                 :components ((:file "named-entities")
-                             (:file "constituent-analysis")))))
+                             (:file "constituent-analysis")
+                             (:file "subclauses")
+                             (:file "theme")))))

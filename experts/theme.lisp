@@ -34,4 +34,3 @@
          (boundaries-theme (assoc (rest (get-binding '?theme bindings)) boundaries)))
     (subseq (get-data transient-structure :utterance-as-list) (second boundaries-theme) (third boundaries-theme))))
 ;; (beng-get-theme *saved-cfs*)
-                                              
