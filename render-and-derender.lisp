@@ -60,7 +60,7 @@
       (setf (left-pole-structure transient-structure)
             (cons new-root expanded-unit-structure))
       transient-structure)))
-;; (comprehend "I saw flowers and toys.")
+;; (comprehend "Mickey Mouse, Donald Duck and Goofy are popular cartoon characters.")
 
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;; FUNCTIONAL STRUCTURE
