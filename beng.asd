@@ -20,8 +20,7 @@
   :depends-on (:fcg
                :xmls
                :nlp-tools
-               :fcg-hybrids
-               #+lispworks :dev-tools)
+               :fcg-hybrids)
   :serial t
   :components ((:file "package")
                (:file "render-and-derender")

@@ -131,15 +131,15 @@
 ;;;;;; ----------------------------------------------------------------
 (defun build-grammar (&key (write-files? t))
   "For writing and loading constructions. Only use after instantiating a construction inventory."
-  (when write-files?
-    (format t "~%Writing constructional definitions (this may take a few seconds)...")
-    (write-lexicon))
-  (make-beng-cxns)
-  (load-lexicon)
-  (load-grammar)
-  (set-data (blackboard *fcg-constructions*) :fusion-hierarchy *fusion-hierarchy*)
-  *fcg-constructions*)
-
+  (with-disabled-monitors
+    (when write-files?
+      (format t "~%Writing constructional definitions (this may take a few seconds)...")
+      (write-lexicon))
+    (make-beng-cxns)
+    (load-lexicon)
+    (load-grammar)
+    (set-data (blackboard *fcg-constructions*) :fusion-hierarchy *fusion-hierarchy*)
+    *fcg-constructions*))
 ;; (comprehend "the window broke")
 
 

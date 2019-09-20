@@ -10,8 +10,7 @@
         #+:hunchentoot-available-on-this-platform :web-interface
         :monitors
         :meta-layer-learning
-        :network
-        #+lispworks :dev-tools))
+        :network))
 
 (in-package :beng)
 

@@ -16,6 +16,14 @@
 
 (in-package :beng)
 
+(defun beng-comprehend (utterance)
+  (activate-monitor trace-fcg)
+  (multiple-value-bind (a solution)
+      (comprehend utterance)
+    (declare (ignore a))
+    (setf *saved-cfs* (fcg-get-transient-structure solution))
+    solution))
+
 ;;;;; Configuration utilities.
 ;;;;; --------------------------------------------------------------------------------
 (defun set-parse-order (order &optional (cxn-inventory *fcg-constructions*))
