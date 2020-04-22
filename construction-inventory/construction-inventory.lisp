@@ -50,12 +50,12 @@
                       ;; Construction sets
                       ;; ----------------------------------------------------------------------------------
                       (:production-order hashed-meaning voice phrasal arg-cxn hashed-lex-id)
-                      (:parse-order hashed-string hashed-lex-id voice marked-phrasal unmarked-phrasal arg-cxn)
+                      (:parse-order idioms-morph hashed-string meta-cxn hashed-lex-id voice marked-phrasal unmarked-phrasal arg-cxn)
                       (:hashed-labels hashed-string hashed-meaning hashed-lex-id)
                       ;; ----------------------------------------------------------------------------------
                       ;; Render and De-rendering
                       ;; ----------------------------------------------------------------------------------
-                      (:de-render-mode . :beng)
+                      (:de-render-mode . :beng-spacy-benepar)
                       (:render-mode . :english-render)
                       ;; ----------------------------------------------------------------------------------
                       ;; Node and Goal tests
@@ -68,11 +68,11 @@
                       ;; ----------------------------------------------------------------------------------
                       ;; NLP Tools
                       ;; ----------------------------------------------------------------------------------
-                      (:preprocessing-steps-for-dependency-parser
-                       dependency-string-append-named-entities
-                       dependency-string-append-compounds-in-np
-                       dependency-string-append-compounds
-                       dependency-promote-conjuncts)
+                      ;(:preprocessing-steps-for-dependency-parser
+                       ;dependency-string-append-named-entities
+                       ;dependency-string-append-compounds-in-np
+                       ;dependency-string-append-compounds
+                       ;dependency-promote-conjuncts)
                       (:preprocessing-tools
                        ;;(:postagger-results #'get-penelope-pos-tags) ;;#'get-stanford-and-universal-pos-tags)
                        (:named-entities #'get-penelope-named-entities))
@@ -99,11 +99,13 @@
                       (:shuffle-cxns-before-application . nil)
                       ;; For learning
                       (:consolidate-repairs . t))
- ;:diagnostics (diagnose-unknown-propernoun-problem)
- ;:repairs (learn-missing-propernoun)      
+ :diagnostics (diagnose-unknown-beng-word)
+ :repairs (repair-unknown-beng-word)
  :visualization-configurations ((:show-wiki-links-in-predicate-networks . nil)
                                 (:show-constructional-dependencies . nil)
                                 (:with-search-debug-data . t))
  :hierarchy-features (constituents dependents)
 
- (set-data (blackboard *fcg-constructions*) :fusion-hierarchy *fusion-hierarchy*))
+ (set-data (blackboard *fcg-constructions*) :fusion-hierarchy *fusion-hierarchy*)
+
+ (load-lexicon))

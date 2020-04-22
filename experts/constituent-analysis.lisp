@@ -49,4 +49,6 @@
                                                 (loop for ob until
                                                       (= ob (second (assoc i closing-bracket-positions)))
                                                       collect ")")))))))
-      (read-from-string (subseq string 0 (1- (length string)))))))
+      (pprint (loop for x in (read-from-string (subseq string 0 (1- (length string))))
+                    unless (stringp x)
+                    collect x)))))

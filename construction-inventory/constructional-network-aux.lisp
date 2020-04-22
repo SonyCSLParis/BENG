@@ -50,7 +50,12 @@
                                 (destination constructional-network-inventory))
   (setf (cxn-edges destination)
         (copy-object (cxn-edges source)))
-  (call-next-method))
+  (setf (constructions destination) (copy-list (constructions source)))
+  (setf (trash destination) (copy-list (trash source)))
+  (loop for key being the hash-keys of
+        (constructions-hash-table source)
+        do (setf (gethash key (constructions-hash-table destination))
+                 (gethash key (constructions-hash-table source)))))
 
 (defmethod find-cxn ((construction t)
                      (cxn-inventory constructional-network-inventory)

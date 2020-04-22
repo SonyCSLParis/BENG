@@ -32,14 +32,14 @@
      (agreement ?agr)
      (lex-class determiner)))
    (?noun
-    (syn-cat (lex-class common-noun))
+    (syn-cat (lex-class noun))
     (args (?input ?context))
     (referent ?ref)
     (parent ?np)
     --
     (syn-cat
      (agreement ?agr)
-     (lex-class common-noun))
+     (lex-class noun))
     (dependents (?determiner))
     (parent ?np))
    (?np

@@ -28,6 +28,15 @@
                      (string= "lisp" (pathname-type p)))
                  (directory (beng-pathname :directory (list "grammar" class)))))
 
+(defun idioms-directory ()
+  (remove-if-not #'(lambda(p)
+                      (string= "lisp" (pathname-type p)))
+                  (directory (beng-pathname :directory (list "idioms")))))
+
+(defun load-idioms ()
+  (loop for path in (idioms-directory)
+        do (load path)))
+
 (defun load-lexical-constructions (lex-class)
   (loop for path in (lex-directory lex-class)
         do (load path)))
@@ -36,9 +45,11 @@
                                               "adverbs"
                                               "auxiliaries"
                                               "determiners"
+                                              "meta"
                                               "nationalities"
                                               "nouns"
                                               "prepositions"
+                                              "pronouns"
                                               "verbs")))
   (with-disabled-monitors
     (loop for lex-class in lex-classes
@@ -137,9 +148,11 @@
       (write-lexicon))
     (make-beng-cxns)
     (load-lexicon)
+    (load-idioms)
     (load-grammar)
     (set-data (blackboard *fcg-constructions*) :fusion-hierarchy *fusion-hierarchy*)
     *fcg-constructions*))
+;; (build-grammar)
 ;; (comprehend "the window broke")
 
 

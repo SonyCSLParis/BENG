@@ -71,7 +71,7 @@
   (dolist (pos '(Noun Deverbal-Adjective Determiner))
     (fusion-add-parent pos 'Top *fusion-hierarchy*))
   (fusion-add-parent 'Verb 'Deverbal-Adjective *fusion-hierarchy*)
-  (dolist (pos '(Common-Noun ProperNoun))
+  (dolist (pos '(Common-Noun Proper-Noun))
     (fusion-add-parent pos 'Noun *fusion-hierarchy*))
   (dolist (pos '(Aux Lex-Verb))
     (fusion-add-parent pos 'Verb *fusion-hierarchy*))

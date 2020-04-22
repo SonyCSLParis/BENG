@@ -50,21 +50,21 @@
    (?subject
     (parent ?np)
     (syn-cat
-     (lex-class common-noun))
+     (lex-class noun))
     (referent ?ref)
     --
     (parent ?np)
     (syn-cat
     (agreement ?agr)
-     (lex-class common-noun)))
+     (lex-class noun)))
    (?object
     (syn-cat
-     (lex-class common-noun))
+     (lex-class noun))
     (referent ?ref2)
     --
     (syn-cat
      (agreement ?agr)
-     (lex-class common-noun))))   
+     (lex-class noun))))   
    :disable-automatic-footprints nil
    :feature-types ((functional-structure sequence))
    :attributes (:label arg-cxn))

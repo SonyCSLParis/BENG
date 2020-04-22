@@ -16,6 +16,8 @@
 
 (in-package :fcg)
 
+
+
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;; CONSTITUENT STRUCTURE
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -26,7 +28,92 @@
 ;; ------------------------------------------------------------------------
 
 ;; Code based on and using the fcg-hybrids code:
-;; https://github.com/SonyCSLParis/fcg-hybrids                                          
+;; https://github.com/SonyCSLParis/fcg-hybrids
+
+(defun terminal-node-p (node)
+  (if (loop for x in (rest node)
+            when (listp x)
+            return t)
+    nil
+    t))
+;; (terminal-node-p '(nnp luc steels))
+
+(defun has-constituents-p (unit)
+  (unit-feature-value unit 'constituents))
+;; (has-constituents-p '(np (constituents det n)))
+;; (has-constituents-p '(n (lex-id test)))
+
+(defun make-unit-id (x)
+  (make-id (format nil "~a-unit" x)))
+;; (make-unit-id 's)
+
+(defmethod represent-constituent-structure ((constituent-tree list)
+                                            (transient-structure coupled-feature-structure)
+                                            (key (eql :benepar))
+                                            (cxn-inventory t)
+                                            &optional (language t)) ;; English by default
+  (declare (ignore key language))
+  (let* ((original-unit-names (mapcar #'first (fcg-get-boundaries transient-structure)))
+         (original-units (fcg-get-transient-unit-structure transient-structure))
+         (units nil))
+    ;; We will first traverse the tree and create a list of units that have parent- and
+    ;; constituent-features. We will afterwards replace the terminal nodes with the original
+    ;; units from the dependency tree so we merge the constituent- and dependency-tree information.
+    (let ((queue (list (list nil (make-unit-id (first constituent-tree)) constituent-tree))))
+      (tagbody
+       start
+       ;; If we have finished every unit, go to the end.
+       (when (null queue)
+         (go end))
+       ;; We now handle the first element in the queue.
+       (let* ((current (pop queue))
+              (parent (first current))
+              (unit-name (second current))
+              (unit-spec (third current)))
+         ;; If it is a terminal node, simply create a unit for it.
+         (if (terminal-node-p unit-spec)
+           (push `(,unit-name
+                   (parent ,parent)) units)
+           ;; If it is not a terminal node, create a unit with constituents.
+           ;; We will add their children to the front of the queue.
+           (let ((new-nodes-to-queue (loop for constituent in (rest unit-spec)
+                                           collect (list unit-name
+                                                         (make-unit-id (first constituent))
+                                                         constituent))))
+             (setf queue (append new-nodes-to-queue queue))
+             (push `(,unit-name
+                     ,@(if parent `((parent ,parent)))
+                     (constituents ,(mapcar #'second new-nodes-to-queue))) units)))
+         ;; Now we reiterate
+         (go start))
+       end))
+    ;; Now we have all the units, we can collect all the terminal-node units.
+    (setf units (reverse units))
+    (let ((terminal-node-units (loop for unit in units
+                                     unless (has-constituents-p unit)
+                                     collect unit))
+          (subst-pairs nil))
+      ;; We now replace those units with the original units from the dependency tree for
+      ;; unit name consistency.
+      (loop for constituent-tree-unit in terminal-node-units
+            for original-unit-name in original-unit-names
+            do (let* ((original-unit (assoc original-unit-name original-units))
+                      (merged-unit `(,(first original-unit)
+                                     ,@(append (rest constituent-tree-unit)
+                                               (rest original-unit)))))
+                 (push (cons (first constituent-tree-unit) original-unit-name) subst-pairs)
+                 (setf units (subst merged-unit constituent-tree-unit units :test #'equal))))
+      (setf units (sublis subst-pairs units))
+      ;; Now we have the new unit structure.
+      (setf (left-pole-structure transient-structure)
+            (cons (get-root original-units) units))
+      ;; We need to recalculate the boundaries and add a root unit:
+      (let ((new-root (calculate-boundaries-and-form-constraints transient-structure nil cxn-inventory)))
+        (setf (left-pole-structure transient-structure)
+              (cons new-root units))
+        transient-structure))))
+;; (de-render "Luc Steels was the first director of Sony CSL Paris." :beng-spacy-benepar)
+;; (comprehend "if the can get sufficient funding")
 
 (defmethod represent-constituent-structure ((analysis list)
                                             (transient-structure coupled-feature-structure)
@@ -102,21 +189,25 @@
                                                         other-word-spec)))))
                                     collect
                                     (make-unit :name (word-dependency-spec-unit-name word-spec)
-                                               :features `((dependents ,dependents)
-                                                           (pos ,(word-dependency-spec-pos-tag word-spec))
-                                                           ,@(if functional-structure
-                                                               `((functional-structure ,functional-structure)
-                                                                 ,@(dolist (other-spec word-specs)
-                                                                     (cond ((passive-subject-p
-                                                                             (word-dependency-spec-syn-role
-                                                                              other-spec))
-                                                                            (return `((voice passive))))
-                                                                           ((subject-p
-                                                                             (word-dependency-spec-syn-role
-                                                                              other-spec))
-                                                                            (return `((voice active))))
-                                                                           (t
-                                                                            nil))))))))))
+                                               :features
+                                               (find-all-features-for-category
+                                                (english-retrieve-category word-spec)
+                                                *english-grammar-categories*
+                                                :features-so-far `((dependents ,dependents)
+                                                                   (pos ,(word-dependency-spec-pos-tag word-spec))
+                                                                   ,@(if functional-structure
+                                                                       `((functional-structure ,functional-structure)
+                                                                         ,@(dolist (other-spec word-specs)
+                                                                             (cond ((passive-subject-p
+                                                                                     (word-dependency-spec-syn-role
+                                                                                      other-spec))
+                                                                                    (return `((voice passive))))
+                                                                                   ((subject-p
+                                                                                     (word-dependency-spec-syn-role
+                                                                                      other-spec))
+                                                                                    (return `((voice active))))
+                                                                                   (t
+                                                                                    nil)))))))))))
     (setf (left-pole-structure transient-structure)
           (append (left-pole-structure transient-structure) structure-to-append))
     transient-structure))
@@ -157,6 +248,29 @@
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;; DE-RENDER
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+(defmethod de-render ((utterance string) (mode (eql :beng-spacy-benepar))
+                      &key cxn-inventory &allow-other-keys)
+  (declare (ignorable mode))
+  ;; Step 1: We do preprocessing with SpaCy and Benepar.
+  (multiple-value-bind (dependency-tree constituent-tree)
+      (nlp-tools:get-beng-sentence-analysis utterance)
+    ;; Step 2: Use the dependency tree for building an initial transient-structure
+    (let* ((utterance-as-list (nlp-tools::dp-build-utterance-as-list-from-dependency-tree dependency-tree))
+           (transient-structure (de-render utterance-as-list :de-render-with-scope
+                                           :cxn-inventory cxn-inventory)))
+      (set-data transient-structure :utterance-as-list utterance-as-list)
+      ;; Step 3: We already infer the functional structure as much as possible.
+      (setf transient-structure (represent-functional-structure dependency-tree transient-structure t :english))
+      ;; Step 4: We also translate the constituent tree into units.
+      (setf transient-structure (represent-constituent-structure
+                                 constituent-tree transient-structure :benepar cxn-inventory :english))
+      ;; We also keep the postag results from the dependency parser.
+      (set-data transient-structure :postagger-results (loop for dependent in dependency-tree
+                                                             collect (list (nlp-tools:dp-get-token dependent)
+                                                                           (nlp-tools:dp-get-tag dependent))))
+      transient-structure)))
+;; (de-render "Luc Steels was the first director of Sony CSL Paris." :beng-spacy-benepar)
 
 (defmethod de-render ((utterance string) (mode (eql :beng))
                       &key cxn-inventory &allow-other-keys)

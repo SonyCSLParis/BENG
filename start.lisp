@@ -17,6 +17,7 @@
 ;;; Make sure that you have loaded the file english-grammar.asd (either through
 ;;; your Lisp init-file or manually). Then load the English grammar by evaluating:
 (ql:quickload :beng)
+
 (in-package :beng)
 
 ;;; ******************************************************************
@@ -27,9 +28,12 @@
 ;;; Loading the Basic English Grammar:
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+
 ;;; Without loading anything, you can already test the de-render function of the
 ;;; English grammar. If things run slowly, check your internet connection.
 (beng-comprehend "Dr Luc Steels founded the Sony Computer Science Laboratories Paris in 1996, where he assembled a talented team.")
+(beng-comprehend "The film executive behind HarperCollins Publishers will rebuild her operation at Sony Pictures after being jettisoned by Walt Disney Studios")
 
 ;; You can check the transient structure in your web browser at:
 ;; http://localhost:8000/

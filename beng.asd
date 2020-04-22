@@ -23,6 +23,7 @@
                :fcg-hybrids)
   :serial t
   :components ((:file "package")
+               (:file "preprocessing")
                (:file "render-and-derender")
                (:module "signature"
                 :serial t
@@ -50,6 +51,8 @@
                 :serial t
                 :components ((:file "spacy-pos-tags")
                              (:file "constructional-network-aux")
+                             (:file "meta-layer-classes")
+                             (:file "meta-layer-aux")
                              (:file "construction-inventory")))
                (:module "experts"
                 :serial t

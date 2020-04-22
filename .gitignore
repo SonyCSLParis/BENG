@@ -8,3 +8,4 @@
 /lexicon/verbs/
 *.xfasl
 *.lisp\#
+*.64xfasl

@@ -17,60 +17,59 @@
 (in-package :beng)
 
 (def-fcg-cxn Passive-Transitive-cxn
-  ((?clause
-    (constituents (?vp))
-    (syn-cat (clause-type transitive)))
-   (?vp
-    (constituents (?passive-aux ?verb))
-    (form ((fields (?modal-aux ?perf-aux ?asp-aux ?passive-aux ?main-verb ?ref-ev))))
-    (tam ?tam)
-    (referent ?ref-ev))
-   (?passive-aux
-    (args ?args))
-   <-
-   (?clause
-    --
-    (HASH form ((before ?np ?vp ?clause))))
-   (?vp
-    --
-    (parent ?clause)
-    (syn-cat (phrase-type VP)
-             (agreement ?agr)))
-   (?passive-aux
-    (HASH meaning ((frame-type event passive-transitive ?ref-ev ?undergoer)))
-    --
-    (lex-id be)
-    (parent ?vp)
-    (syn-cat (lex-class aux)
-             (is-passive-marker +)
-             (verb-form ?vf)
-             (agreement ?agr)
-             (finite ?fin)))
-   (?verb
-    (parent ?vp)
-    (args ?args)
-    (arg-struct ((role ?ref Actor)
-                 (role ?ref2 Undergoer)))
-    (referent ?ref-ev)
-    (sem-frame verb)
-    --
-    (parent ?vp)
-    (voice passive)
-    (syn-cat (agreement ?agr))
-    (functional-structure
-     ((subject ?subject)))
-    (dependents (?subject ?passive-aux)))
-   (?subject
-    (parent ?np)
-    (syn-cat
-     (lex-class common-noun))
-    (referent ?ref2)
-    --
-    (parent ?np)
-    (syn-cat
-    (agreement ?agr)
-     (lex-class common-noun))))
-   :disable-automatic-footprints nil
-   :feature-types ((functional-structure sequence))
-   :attributes (:label arg-cxn))
-;; (comprehend-and-formulate "the ball was kicked")
+             ((?clause
+               (syn-cat (clause-type transitive)))
+              (?vp
+               (constituents (?passive-aux ?verb))
+               (form ((fields (?modal-aux ?perf-aux ?asp-aux ?passive-aux ?main-verb ?ref-ev))))
+               (tam ?tam)
+               (referent ?ref-ev))
+              (?passive-aux
+               (args ?args))
+              <-
+              (?clause
+               --
+               (HASH form ((before ?np ?vp ?clause))))
+              (?vp
+               --
+               (parent ?clause)
+               (syn-cat (phrase-type VP)
+                        (agreement ?agr)))
+              (?passive-aux
+               (HASH meaning ((frame-type event passive-transitive ?ref-ev ?undergoer)))
+               --
+               (lex-id be)
+               (parent ?vp)
+               (syn-cat (lex-class aux)
+                        (is-passive-marker +)
+                        (verb-form ?vf)
+                        (agreement ?agr)
+                        (finite ?fin)))
+              (?verb
+               (parent ?vp)
+               (args ?args)
+               (arg-struct ((role ?ref Actor)
+                            (role ?undergoer Undergoer)))
+               (referent ?ref-ev)
+               (sem-frame verb)
+               --
+               (parent ?vp)
+               (voice passive)
+               (syn-cat (agreement ?agr))
+               (functional-structure
+                ((subject ?subject)))
+               (dependents (?subject ?passive-aux)))
+              (?subject
+               (parent ?np)
+               (syn-cat
+                (lex-class noun))
+               (referent ?undergoer)
+               --
+               (parent ?np)
+               (syn-cat
+                (agreement ?agr)
+                (lex-class noun))))
+             :disable-automatic-footprints nil
+             :feature-types ((functional-structure sequence))
+             :attributes (:label arg-cxn))
+;; (comprehend "the ball was kicked")

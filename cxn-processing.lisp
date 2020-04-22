@@ -247,3 +247,24 @@
    while cxns
    finally (setf (fully-expanded? node) t)))
 ;; (comprehend "cat mat")
+
+;;;    ;; For meta-layer
+;;;    (when (and (get-configuration cip :use-meta-layer)
+;;;               (diagnostics node))
+;;;      (multiple-value-bind (new-problems new-fixes)
+;;;          (notify-learning node :trigger 'new-node)
+;;;        (when new-problems
+;;;          (loop for problem in new-problems
+;;;                do (push (type-of problem) (statuses node)))
+;;;          (push 'diagnostic-triggered (statuses node)))
+;;;        ;; Loop through the new-fixes (they should have a list of construction-application-results in
+;;;        ;; their data-field 'fixed-cars), make nodes of them, add them as children, and enqueue them
+;;;        ;; Note: fixes don't need to have this field, they may also directly affect the CIP
+;;;        (loop for fix in new-fixes ;;
+;;;              when (field? fix 'fixed-cars)
+;;;              do (loop for fixed-car in (get-data fix 'fixed-cars)
+;;;                       do
+;;;                       (let ((fixed-child (cip-add-child node fixed-car)))
+;;;                         (push (type-of (issued-by fix)) (statuses fixed-child))
+;;;                         (push 'added-by-repair (statuses fixed-child))
+;;;                         (cip-enqueue fixed-child cip queue-mode))))))
