@@ -9,3 +9,6 @@
 *.xfasl
 *.lisp\#
 *.64xfasl
+*.py~
+*.py
+*.pyc
