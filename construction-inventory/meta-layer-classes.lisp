@@ -34,3 +34,22 @@
 
 (defclass repair-unknown-BENG-word (repair)
   ((trigger :initform 'fcg::new-node)))
+
+;;; ------------------------------------------------------------------------------------------
+;;; Unchunked Referring Expressions
+;;; ------------------------------------------------------------------------------------------
+
+;;; Diagnosed at event 'fcg::new-node (notified by #'next-cip-solution)
+
+(defclass problem-unchunked-NP (problem)
+  ((diagnosis :documentation "More information about the unchunked NP."
+              :initarg :diagnosis
+              :initform nil
+              :accessor diagnosis))
+  (:documentation "A noun phrase for which no chunk exists yet."))
+
+(defclass diagnose-unchunked-NP (diagnostic)
+  ((trigger :initform 'fcg::new-node)))
+
+(defclass repair-unchunked-NP (repair)
+  ((trigger :initform 'fcg::new-node)))

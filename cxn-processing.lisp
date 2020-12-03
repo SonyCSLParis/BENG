@@ -119,7 +119,11 @@
         (t (let ((root (get-root (fcg-get-transient-unit-structure node))))
              (if (eql (fcg-get-direction node) '<-)
                ;; In parsing we are interested in strings
-               (mapcar #'third (extract-strings (list root)))
+               (append (mapcar #'third (extract-strings (list root)))
+                       (loop for unit in (fcg-get-transient-unit-structure node)
+                             for accessor = (assoc 'fcg::node-accessor (unit-body unit))
+                             when accessor
+                             collect (second accessor)))
                ;; In production we are interested in meaninsg
                (loop for meaning in (extract-meaning root)
                      when (beng::english-extract-label meaning)

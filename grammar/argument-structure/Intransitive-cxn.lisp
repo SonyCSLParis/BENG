@@ -16,13 +16,30 @@
 
 (in-package :beng)
 
+(def-fcg-cxn Topic-Comment-cxn
+             (<-
+              (?clause
+               (information-structure (topic ?np)
+                                      (comment ?vp))
+               --
+               (HASH form ((first ?np ?clause)))
+               (constituents (?np ?vp))
+               (syn-cat (clause-type intransitive)))
+              (?np
+               --
+               (syn-cat (phrase-type NP))
+               (parent ?clause))
+              (?vp
+               --
+               (syn-cat (phrase-type VP))
+               (parent ?clause)))
+             :disable-automatic-footprints nil
+             :attributes (:label arg-cxn))
+
 (def-fcg-cxn Intransitive-cxn
   ((?clause
     (constituents (?vp))
     (syn-cat (clause-type intransitive)))
-   (?vp
-    (constituents (?verb))
-    (tam ?tam))
    <-
    (?vp
     --
@@ -30,26 +47,22 @@
     (parent ?clause)
     (syn-cat (phrase-type VP)))
    (?verb
-    (HASH meaning ((frame-type event intransitive-frame ?ev-ref ?ref)))
     (arg-struct ((role ?ref Emphasized-Role)))
     (parent ?vp)
     (referent ?ev-ref)
     (sem-frame verb)
     --
-    (functional-structure ((subject ?subject)))
-    (dependents (?subject))
-    (parent ?vp)
-    (voice active)
-    (syn-cat (agreement ?agr)))
+    (functional-structure (subject ?subject)
+                          (not (object ?object)))
+    (parent ?vp))
    (?subject
     (parent ?np)
-    (syn-cat (lex-class common-noun))
+    (syn-cat (lex-class ?lex-class))
     (referent ?ref)
     --
-    (parent ?np)
-    (syn-cat (agreement ?agr)
-             (lex-class common-noun))))
+    (parent ?np)))
    :disable-automatic-footprints nil
-   :feature-types ((functional-structure sequence))
+   ; :feature-types ((functional-structure sequence))
    :attributes (:label arg-cxn))
-;; (comprehend-and-formulate "the window broke")
+;; (comprehend "the window broke")
+

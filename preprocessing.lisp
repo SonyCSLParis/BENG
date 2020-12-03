@@ -24,16 +24,16 @@
   "Call the penelope server to get the dependency labels all words in a sentence."
   (unless (stringp sentence)
     (error "The function <run-penelope-dependency-parser> expects a string as input"))
-  (curl-json "/beng"
-             (encode-json-to-string-for-shell `((:sentence . ,(remove-multiple-spaces sentence))
-                                                (:model . ,model)))))
+  (send-request "/beng"
+                (encode-json-to-string `((:sentence . ,(remove-multiple-spaces sentence))
+                                         (:model . ,model)))))
 
 (defun run-displacy (sentence &key (model "en"))
   (unless (stringp sentence)
     (error "The function <run-penelope-dependency-parser> expects a string as input"))
   (let* ((url (string-append *penelope-host* "/displacy"))
-         (json (encode-json-to-string-for-shell `((:sentence . ,(remove-multiple-spaces sentence))
-                                                  (:model . ,model))))
+         (json (encode-json-to-string `((:sentence . ,(remove-multiple-spaces sentence))
+                                        (:model . ,model))))
          (response (exec-and-return "curl" url "-H"
                                     #+lispworks (format nil "~s" "Content-Type: application/json")
                                     #-lispworks (format nil "~a" "Content-Type: application/json")
@@ -48,7 +48,7 @@
   (unless (stringp sentence)
     (error "The function <run-penelope-dependency-parser> expects a string as input"))
   (let* ((url (string-append *penelope-host* "/displacy-ents"))
-         (json (encode-json-to-string-for-shell `((:sentence . ,(remove-multiple-spaces sentence))
+         (json (encode-json-to-string `((:sentence . ,(remove-multiple-spaces sentence))
                                                   (:model . ,model))))
          (response (exec-and-return "curl" url "-H"
                                     #+lispworks (format nil "~s" "Content-Type: application/json")
@@ -62,17 +62,32 @@
 
 (defun convert-ica-string-to-ica-list (string)
   "Given a string from benepar, translate this into a list representation."
-  (read-from-string (apply #'string-append
-                           (loop for s in (split-sequence:split-sequence #\Space string)
-                                 collect (cond ((string= s "(.") "(\\. ")
-                                               ((string= s "(,") "(\\, ")
-                                               ((member (subseq s 0 1) '("." ",") :test #'string=)
-                                                (format nil "\\~a" s))
-                                               (t
-                                                (format nil "~a " s)))))))
+  (loop for pair in '(("." "\\.")
+                      ("," "\\,")
+                      ("''" "PARENTH")
+                      ("``" "PARENTH")
+                      ("\"" "PARENTH"))
+        do (setf string (string-replace string (first pair) (second pair))))
+  (read-from-string string))
+
+;;;   
+;;;   (read-from-string (apply #'string-append
+;;;                            (loop for s in (split-sequence:split-sequence #\Space string)
+;;;                                  collect (cond ((ppcre::regex-replace "(.") "(\\. ")
+;;;                                                ((string= s "(,") "(\\, ")
+;;;                                                ((string= s "(''") "(PARENTH ")
+;;;                                                ((string= s "((''") "((PARENTH ")
+;;;                                                ((string= s "(``") "(PARENTH ")
+;;;                                                ((string= s "(``") "((PARENTH ")
+;;;                                                ((string= s "\")") "PARENTH)")
+;;;                                                ((string= s "\"))") "PARENTH))")
+;;;                                                ((member (subseq s 0 1) '("." ",") :test #'string=)
+;;;                                                 (format nil "\\~a" s))
+;;;                                                (t
+;;;                                                 (format nil "~a " s)))))))
 
 (defun get-beng-sentence-analysis (sentence &key (model "en")) ;; To do: allow sentence ID.
-  (let* ((analysis (run-beng-parser sentence :model model))
+  (let* ((analysis (run-beng-parser (format nil "~a" sentence) :model model))
          (dependency-tree (rest (assoc :tree (first (rest (assoc :beng analysis))))))
          (constituent-tree (convert-ica-string-to-ica-list (second (assoc :ica (second (first analysis)))))))
     (values dependency-tree constituent-tree)))

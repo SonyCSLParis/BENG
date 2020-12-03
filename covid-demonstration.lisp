@@ -1,11 +1,48 @@
 
 (in-package :beng)
 
+(defparameter *doc1* "The fight against COVID-19 has launched a thousand military metaphors in the British press.")
+(defparameter *doc2* "The \"greatest challenge since the Second World War\", \"the frontline\", the virus is an \"invisible enemy\", and so forth.")
+(defparameter *doc3* "US citizens feel besieged and under threat as we retreat to our foxholes.")
+
+(let ((cxn-set (make-instance 'construction-set))
+      (car nil))
+  (deactivate-monitor trace-fcg)
+  (setf (right-pole-structure *saved-cfs*)
+      `((meta
+         (information-type statement)
+         (temporal-frame ?temporal-frame))
+        (topic
+         (phrase ?topic-phrase))
+        (state-activity
+         (phrase ?state-activity-phrase)
+         (type ?type-of-state-activity)
+         (manner (phrase ?manner-phrase-1))
+         (location (phrase ?location-phrase-2)))))
+  (multiple-value-bind (cars other)
+      (fcg-apply (make-instance 'construction
+                                :name 'topic-comment-cxn
+                                :left-pole '((?clause
+                                              (information-structure (==1 (topic ?topic)
+                                                                          (comment ?comment)))
+                                              (footprints (==0 topic-comment-cxn)))
+                                             ((J ?clause)
+                                              (footprints (== topic-comment-cxn))))
+                                :right-pole '((topic
+                                               (phrase  ?topic))
+                                              (state-activity
+                                               (phrase ?comment))))
+                 *saved-cfs* '->)
+    (add-element (make-html (first cars)))))
+
+(add-element (make-html *saved-cfs*))
+
+
+
+
 (defparameter *sample-text* "The frontline troops are running out of protective gear (PPE), ammunition (beds) and heavy equipment (ventilators). Supply lines are stretched thin. Meanwhile, the country's leadership - the prime minister, secretary of state for health and the chief medical officer - are self-isolating in their bunkers where they cannot be functioning at 100%. The enemy moves among us unseen.")
 
-
-
-(comprehend "The frontline troops are running out of protective gear (PPE), ammunition (beds) and heavy equipment (ventilators).")
+(comprehend "The frontline troops are running out of protective gear.") ; (PPE), ammunition (beds) and heavy equipment (ventilators).")
 
 (in-package :s-dot)
 

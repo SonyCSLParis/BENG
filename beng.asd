@@ -28,6 +28,7 @@
                (:module "signature"
                 :serial t
                 :components ((:file "config")
+                             (:file "benepar-conversion")
                              (:file "fusion-hierarchy")
                              (:file "fusion-matching")
                              (:file "semantics")))

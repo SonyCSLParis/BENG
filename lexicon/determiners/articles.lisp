@@ -25,7 +25,7 @@
                (lex-id a)
                (parent ?parent)
                (sem-cat (sem-class selector))
-               (syn-cat (lex-class article)
+               (syn-cat (lex-class determiner)
                         (agreement (- - + -))
                         (definite -)))
               <--
@@ -56,7 +56,7 @@
                           :meaning indefinite-an :string "an" :POS ("DET")))
 ;; (comprehend-and-formulate '("an"))
 
-(def-fcg-cxn the
+(def-fcg-cxn the-lex
              ((?definite-article
                (referent ?x)
                (args (?x ?source))

@@ -93,3 +93,95 @@
                      :problem problem
                      :restart-data construction))))
 ;; (comprehend "the yellowish troops are going home")
+
+;;; ------------------------------------------------------------------------------------------
+;;; Noun Phrase Chunks
+;;; ------------------------------------------------------------------------------------------
+
+(defmethod diagnose ((diagnostic diagnose-unchunked-np) (node cip-node)
+                     &key &allow-other-keys)
+  "Diagnose that the structure contains untreated strings."
+  (unless (member (current-label (cxn-supplier node))
+                  '(hashed-string))
+    (let* ((transient-unit-structure (fcg-get-transient-unit-structure node))
+           (diagnosis (dolist (unit transient-unit-structure)
+                        (when (and (null (unit-feature-value unit 'footprints))
+                                   (unify '(==1 (syn-cat (==1 phrase-type NP)))
+                                          (unit-body unit)))
+                          (return unit)))))
+      (when diagnosis
+        (make-instance 'problem-unchunked-np
+                       :diagnosis diagnosis)))))
+
+(defun beng-get-constituents (unit)
+  (unit-feature-value unit 'constituents))
+
+(defun find-pos (pos features)
+  (find pos features :test #'equal :key #'second))
+
+(defmethod repair ((repair repair-unchunked-np)
+                   (problem problem-unchunked-np)
+                   (node cip-node)
+                   &key &allow-other-keys)
+  "Create a chunked NP construction."
+  (let* ((diagnosed-NP (diagnosis problem)) ;; the NP that wasn't covered yet.
+         (unit-structure (fcg-get-transient-unit-structure node))
+         (constituents (loop for constituent-name in (beng-get-constituents diagnosed-NP)
+                             collect (assoc constituent-name unit-structure)))
+         (sorted-boundaries (sort (loop for constituent-name in (beng-get-constituents diagnosed-NP)
+                                        collect (assoc constituent-name (fcg-get-boundaries unit-structure)))
+                                  #'< :key #'second))
+         ;; Now some variables that we will need while iterating through the constituents
+         (output-link (make-var 'link))
+         (units-with-locks nil))
+    ;; Now we iterate through the constituents in order of appearance.
+    (dolist (boundary sorted-boundaries)
+      (let* ((constituent (assoc (unit-name boundary) constituents))
+             (features (unit-body constituent)))
+        (cond ((unify '(==1 (syn-cat (==1 (lex-class ?lex-class)))) features) ;; A lexical unit.
+               (let ((input-link (make-var 'link))
+                     (lex-class (second (assoc 'lex-class (second (assoc 'syn-cat features))))))
+                 (push `(,(unit-name boundary)
+                         :comprehension-lock ((parent ?np-unit)
+                                              (args (,output-link ,input-link ?referent))
+                                              (syn-cat (lex-class ,lex-class)))
+                         :formulation-lock ((syn-cat (agreement ?agr))))
+                       units-with-locks)
+                 (setf output-link input-link)))
+              (t
+               nil))))
+    (let ((substitution-list (loop for constituent-name in (mapcar #'first units-with-locks)
+                                   collect (cons constituent-name (make-var "constituent-unit")))))
+      (setf units-with-locks (cons `(?np-unit
+                                     :comprehension-lock ((HASH form ,(handle-form-predicate-in-de-render sorted-boundaries 'meets))
+                                                          (constituents ,(cons '==p (beng-get-constituents diagnosed-NP)))
+                                                          (syn-cat (phrase-type NP)))
+                                     :formulation-lock ((referent ?referent)
+                                                        (syn-cat (agreement ?agr))))
+                                   (reverse units-with-locks)))
+      (setf units-with-locks (sublis substitution-list units-with-locks))
+      ;; We will write the NP-construction for when we want to load the grammar anew at a later stage:
+      ;; (beng-write-chunked-NP units-with-locks)
+      ;; And we will define the  construction here on the fly to continue processing:
+      (multiple-value-bind (cxn-set construction)
+          (eval `(def-fcg-cxn ,(make-const "NP-cxn")
+                              ((?np-unit
+                                (footprints (np-cxn)))
+                               <-
+                               ,@(loop for unit-spec in units-with-locks
+                                       collect `(,(first unit-spec)
+                                                 ,@(second (assoc :formulation-lock unit-spec))
+                                                 --
+                                                 ,@(second (assoc :comprehension-lock unit-spec)))))
+                              :disable-automatic-footprints t
+                              :feature-types ((constituents sequence))
+                              :cxn-inventory ,(copy-object (original-cxn-set (construction-inventory node)))
+                              :attributes (:label hashed-string :string ,(format nil "np-~a" (lengt constituents)))))
+        (declare (ignore cxn-set))
+        (make-instance 'fcg::cxn-fix
+                       :repair repair
+                       :problem problem
+                       :restart-data construction)))))
+                   
+;; Case 1: lexical units (simple NP)
+;;         (NP (Det a) (NNP cat))

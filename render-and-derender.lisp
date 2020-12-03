@@ -16,8 +16,6 @@
 
 (in-package :fcg)
 
-
-
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;; CONSTITUENT STRUCTURE
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -59,7 +57,7 @@
     ;; We will first traverse the tree and create a list of units that have parent- and
     ;; constituent-features. We will afterwards replace the terminal nodes with the original
     ;; units from the dependency tree so we merge the constituent- and dependency-tree information.
-    (let ((queue (list (list nil (make-unit-id (first constituent-tree)) constituent-tree))))
+    (let ((queue (list (list nil (make-unit-id (first constituent-tree)) constituent-tree (first constituent-tree)))))
       (tagbody
        start
        ;; If we have finished every unit, go to the end.
@@ -67,9 +65,10 @@
          (go end))
        ;; We now handle the first element in the queue.
        (let* ((current (pop queue))
-              (parent (first current))
-              (unit-name (second current))
-              (unit-spec (third current)))
+              (parent (first current)) ;; E.g. s-unit
+              (unit-name (second current)) ;; e.g. np-unit
+              (unit-spec (third current)) ;; e.g. ((ART "the") (NN "cat")
+              (category (fourth current))) ;; e.g. NP
          ;; If it is a terminal node, simply create a unit for it.
          (if (terminal-node-p unit-spec)
            (push `(,unit-name
@@ -79,13 +78,18 @@
            (let ((new-nodes-to-queue (loop for constituent in (rest unit-spec)
                                            collect (list unit-name
                                                          (make-unit-id (first constituent))
-                                                         constituent))))
+                                                         constituent
+                                                         (first constituent)))))
              (setf queue (append new-nodes-to-queue queue))
              (push `(,unit-name
-                     ,@(if parent `((parent ,parent)))
-                     (constituents ,(mapcar #'second new-nodes-to-queue))) units)))
-         ;; Now we reiterate
-         (go start))
+                     ,@(find-all-features-for-category (fetch-benepar-category category) *english-grammar-categories*
+                                                       :features-so-far `(,@(if parent `((parent ,parent)))
+                                                                          (constituents ,(mapcar #'second new-nodes-to-queue))
+                                                                          (node-accessor
+                                                                           ,(format nil "~a-~a" category (length new-nodes-to-queue))))))
+                   units)))
+       ;; Now we reiterate
+       (go start))
        end))
     ;; Now we have all the units, we can collect all the terminal-node units.
     (setf units (reverse units))
@@ -114,6 +118,7 @@
         transient-structure))))
 ;; (de-render "Luc Steels was the first director of Sony CSL Paris." :beng-spacy-benepar)
 ;; (comprehend "if the can get sufficient funding")
+;; (dev-tools:dev-construction-tutor)
 
 (defmethod represent-constituent-structure ((analysis list)
                                             (transient-structure coupled-feature-structure)
@@ -174,7 +179,6 @@
                                     (loop for other-word-spec in dependent-word-specs
                                           for function = (word-dependency-spec-syn-role
                                                           other-word-spec)
-                                          when (core-function-p function)
                                           collect (cond
                                                    ((subject-p function)
                                                     `(subject
@@ -183,10 +187,16 @@
                                                    ((object-p function)
                                                     `(object ,(word-dependency-spec-unit-name
                                                                other-word-spec)))
-                                                   (t
+                                                   ((indirect-object-p function)
                                                     `(indirect-object
                                                       ,(word-dependency-spec-unit-name
-                                                        other-word-spec)))))
+                                                        other-word-spec)))
+                                                   ((adverbial-modifier-p function)
+                                                    `(adv-modifier
+                                                      ,(word-dependency-spec-unit-name
+                                                        other-word-spec)))
+                                                   (t
+                                                    nil)))
                                     collect
                                     (make-unit :name (word-dependency-spec-unit-name word-spec)
                                                :features
@@ -271,6 +281,59 @@
                                                                            (nlp-tools:dp-get-tag dependent))))
       transient-structure)))
 ;; (de-render "Luc Steels was the first director of Sony CSL Paris." :beng-spacy-benepar)
+
+(defstruct (preprocessing-result (:conc-name pr-)) dependency-structure constituent-structure)
+
+(defmethod copy-object ((pr preprocessing-result))
+  (make-preprocessing-result :dependency-structure (pr-dependency-structure pr)
+                             :constituent-structure (pr-constituent-structure pr)))
+
+(export '(make-preprocessing-result preprocessing-result pr-dependency-structure pr-constituent-structure))
+
+(defmethod de-render ((utterance t) (mode (eql :covid-19))
+                      &key cxn-inventory &allow-other-keys)
+  (declare (ignorable mode))
+  (let* ((utterance-as-list (nlp-tools:dp-build-utterance-as-list-from-dependency-tree (pr-dependency-structure utterance)))
+         (transient-structure (de-render utterance-as-list :de-render-with-scope
+                                         :cxn-inventory cxn-inventory)))
+    (set-data transient-structure :utterance-as-list utterance-as-list)
+    (setf transient-structure (represent-functional-structure (pr-dependency-structure utterance) transient-structure t :english))
+    (setf transient-structure (represent-constituent-structure
+                               (pr-constituent-structure utterance) transient-structure :benepar cxn-inventory :english))
+    (set-data transient-structure :postagger-results (loop for dependent in (pr-dependency-structure utterance)
+                                                           collect (list (nlp-tools:dp-get-token dependent)
+                                                                         (nlp-tools:dp-get-tag dependent))))
+    transient-structure))
+
+
+(defmethod size ((construction-inventory null))
+  "Default implementation returning (length (constructions ci))"
+  0)
+
+;;; (defmethod parse ((utterance t) (construction-inventory constructional-network-inventory)
+;;;                   &optional silent)
+;;;   (let* ((utterance-as-list (nlp-tools:dp-build-utterance-as-list-from-dependency-tree (pr-dependency-structure utterance)))
+;;;          (initial-cfs (de-render utterance :covid-19
+;;;                                  :cxn-inventory (original-cxn-set construction-inventory))))
+;;;     (initialize-transient-structure-blackboard initial-cfs utterance-as-list construction-inventory '<-)
+;;;     (unless silent (notify parse-started utterance-as-list initial-cfs))
+;;;     (multiple-value-bind
+;;;         (solution cip)
+;;;         (fcg-apply construction-inventory initial-cfs '<- :notify (not silent))
+;;;       (let ((meaning 
+;;;              (and solution
+;;;                   (extract-meanings
+;;;                    (left-pole-structure (car-resulting-cfs (cipn-car solution)))))))
+;;;         (unless silent (notify parse-finished meaning construction-inventory))
+;;;         (values meaning solution cip)))))
+
+
+;; (set-configuration *fcg-constructions* :de-render-mode :covid-19)
+;; (comprehend (first beng::*test-preprocessing*))
+
+;; (activate-monitor trace-fcg)
+;; (setf *my-test* (parse (first beng::*test-preprocessing*) *fcg-constructions* t))
+;; (set-configuration *fcg-constructions* :preprocessing-tools nil)
 
 (defmethod de-render ((utterance string) (mode (eql :beng))
                       &key cxn-inventory &allow-other-keys)

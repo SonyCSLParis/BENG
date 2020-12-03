@@ -57,3 +57,38 @@
 ;; (fcg-show-cxn 'np-detnoun-cxn)
 ;; (set-parse-order '(hashed-string hashed-lex-id phrasal))
 
+
+(def-fcg-cxn NP-DetAdjective-cxn
+  ((?np
+    (referent ?ref))
+   <-
+   (?determiner
+    (parent ?np)
+    (args (?ref ?input))
+    (referent ?ref)
+    (syn-cat
+     (lex-class determiner))
+    --
+    (parent ?np)
+    (syn-cat
+     (agreement ?agr)
+     (lex-class determiner)))
+   (?adjective
+    (syn-cat (agreement ?agr))
+    (args (?input ?context))
+    (referent ?ref)
+    (parent ?np)
+    --
+    (syn-cat
+     (lex-class adjective))
+    (parent ?np))
+   (?np
+    --
+    (HASH form ((meets ?determiner ?adjective ?np)))
+    (syn-cat
+     (phrase-type NP)
+     (agreement ?agr))
+    (constituents (?determiner ?adjective))))
+ :disable-automatic-footprints nil
+ :attributes (:label phrasal marked-phrasal))
+;; (comprehend "the cat")

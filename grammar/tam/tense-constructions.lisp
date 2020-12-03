@@ -40,7 +40,7 @@
                --
                (syn-cat (phrase-type vp)
                         (agreement ?agr))
-               (tam (tense past)
+               (tam (tense present)
                     (aspect ?aspect)
                     (modality indicative))
                (constituents (?finite-verb)))
