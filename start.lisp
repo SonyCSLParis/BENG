@@ -18,7 +18,12 @@
 ;;; your Lisp init-file or manually). Then load the English grammar by evaluating:
 (ql:quickload :beng)
 
+(import '(nlp-tools::*penelope-host*))
+
 (in-package :beng)
+
+(setf *penelope-host* "http://spacy.fcg-net.org/")
+
 
 ;;; ******************************************************************
 ;;; *** IMPORTANT: BENG requires an internet connection to work!!! ***
@@ -28,28 +33,19 @@
 ;;; Loading the Basic English Grammar:
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-
 ;;; Without loading anything, you can already test the de-render function of the
 ;;; English grammar. If things run slowly, check your internet connection.
-(beng-comprehend "Dr Luc Steels founded the Sony Computer Science Laboratories Paris in 1996, where he assembled a talented team.")
-(beng-comprehend "The film executive behind HarperCollins Publishers will rebuild her operation at Sony Pictures after being jettisoned by Walt Disney Studios")
+(progn
+  (activate-monitor trace-fcg)
+  (make-empty-construction-inventory-cxns))
+(comprehend "Dr Luc Steels founded the Sony Computer Science Laboratories Paris in 1996, where he assembled a talented team.")
+(comprehend "The film executive behind HarperCollins Publishers will rebuild her operation at Sony Pictures after being jettisoned by Walt Disney Studios")
 
 ;; You can check the transient structure in your web browser at:
 ;; http://localhost:8000/
 ;; Hover above the transient structure to show a pop-up menu, and click
 ;; "h1" and "h2" to switch between a constituency- and dependency-view on
 ;; the transient structure.
-
-;; You can also query the result.
-;; The function #'beng-comprehend saves the result in the global parameter *saved-cfs*, which you can
-;; also manually set through the web interface of FCG.
-(beng-get-named-entities *saved-cfs*)        ;; What are the named entities?
-(beng-get-theme *saved-cfs*)                 ;; About who/what does the sentence saying about something?
-(beng-get-rheme *saved-cfs*)                 ;; What does the sentence say about the theme?
-(beng-get-constituent-structure *saved-cfs*) ;; A bracketed notation of the constituent structure.
-(beng-identify-subclauses *saved-cfs*)       ;; Identify subclauses.
-
 
 ;; First time using the English grammar, or when you need to rebuild everything.
 ;; This will write files for each  lexical construction in the folder lexicon,
@@ -88,7 +84,8 @@
 ;;; Developing the Basic English Grammar:
 ;;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-;; If you use LispWorks on MacOSx, you can also use the following FCG developer tools:
+;; If you use LispWorks on MacOSx, you can also use the following FCG developer tools. You will first need
+;; to obtain them from https://github.com/SonyCSLParis/fcg-dev-tools
 ;; ------------------------------------------------------------------------------------------------------------
 ;; (ql:quickload :dev-tools)
 ;; (dev-tools::dev-construction-browser :editor)       ; See demo at http://www.remivantrijp.eu/construction-browser/ 
@@ -106,7 +103,7 @@
 
 ;; Some examples
 (comprehend "the window broke")
-(beng-comprehend "the scientist presented groundbreaking work")
+(comprehend "the scientist presented groundbreaking work")
 
 ;; Formulation is currently only possible for a small number of constructions, so
 ;; it is better to test only comprehension.
