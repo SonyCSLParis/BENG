@@ -85,6 +85,11 @@
                        :name word
                        :type "lisp")))
 
+(defun load-auxiliary (word)
+  (load (beng-pathname :directory '("lexicon" "auxiliaries")
+                       :name word
+                       :type "lisp")))
+
 (defun load-articles ()
   (load (beng-pathname :directory '("lexicon" "determiners")
                        :name "articles"

@@ -15,7 +15,7 @@
 ;;; ----------------------------------------------------------------------------
 
 ;;; FUSION is a process in constructional language processing in which two categories
-;;; are compared in terms of their semantic compatibility. If so, they can "fuse" with
+;;; are compared in terms of their s(NP (DT A) (NN TAX) (NN ASSESSMENT))emantic compatibility. If so, they can "fuse" with
 ;;; each other. We operationalize fusion by using an open-ended CATEGORY HIERARCHY as
 ;;; implemented by Paul Van Eecke.
 ;;;
@@ -35,6 +35,10 @@
 ;;;
 
 (in-package :beng)
+
+(export '(*fusion-hierarchy*
+          get-fusion-hierarchy
+          fusion-add-parent))
 
 (defparameter *fusion-hierarchy* nil "Captures the relations for the fusion hierarchy.")
 (setf *fusion-hierarchy* (make-hash-table))

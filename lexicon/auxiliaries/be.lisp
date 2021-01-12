@@ -152,7 +152,7 @@
 (def-fcg-cxn was-morph
              ((?was
                (footprints (number morph)))
-               <--
+               <--all-types
               (?was
                (lex-id be)
                (footprints (not number morph))

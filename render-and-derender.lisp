@@ -265,6 +265,8 @@
   ;; Step 1: We do preprocessing with SpaCy and Benepar.
   (multiple-value-bind (dependency-tree constituent-tree)
       (nlp-tools:get-beng-sentence-analysis utterance)
+    (setf dependency-tree (dependency-string-append-compounds dependency-tree)
+          constituent-tree (constituent-string-append-compounds constituent-tree))
     ;; Step 2: Use the dependency tree for building an initial transient-structure
     (let* ((utterance-as-list (nlp-tools::dp-build-utterance-as-list-from-dependency-tree dependency-tree))
            (transient-structure (de-render utterance-as-list :de-render-with-scope
