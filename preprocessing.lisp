@@ -16,12 +16,12 @@
 
 (in-package :nlp-tools)
 
-(defparameter *penelope-host* "http://spacy.fcg-net.org")
+(setf *penelope-host* "http://spacy.fcg-net.org")
 
 (export '(run-displacy run-displacy-ents get-beng-sentence-analysis))
 
 (defun run-beng-parser (sentence &key (model "en"))
-  "Call the penelope server to get the dependency labels all words in a sentence."
+  "Test-function only. Call the penelope server to get the dependency labels all words in a sentence."
   (unless (stringp sentence)
     (error "The function <run-penelope-dependency-parser> expects a string as input"))
   (send-request "/beng"
@@ -29,6 +29,7 @@
                                          (:model . ,model)))))
 
 (defun run-displacy (sentence &key (model "en"))
+  "Test function only. Show dependency graph of a sentence in the web interface."
   (unless (stringp sentence)
     (error "The function <run-penelope-dependency-parser> expects a string as input"))
   (let* ((url (string-append *penelope-host* "/displacy"))
@@ -45,6 +46,7 @@
     nil))
 
 (defun run-displacy-ents (sentence &key (model "en"))
+  "Test function only. Runs named entity recognition and displays them in web interface."
   (unless (stringp sentence)
     (error "The function <run-penelope-dependency-parser> expects a string as input"))
   (let* ((url (string-append *penelope-host* "/displacy-ents"))
@@ -60,43 +62,16 @@
           wi::*requests*)
     nil))
 
-(defun convert-ica-string-to-ica-list (string)
-  "Given a string from benepar, translate this into a list representation."
-  (loop for pair in '(("." "\\.")
-                      ("," "\\,")
-                      ("''" "PARENTH")
-                      ("``" "PARENTH")
-                      ("\"" "PARENTH"))
-        do (setf string (string-replace string (first pair) (second pair))))
-  (read-from-string string))
-
-;;;   
-;;;   (read-from-string (apply #'string-append
-;;;                            (loop for s in (split-sequence:split-sequence #\Space string)
-;;;                                  collect (cond ((ppcre::regex-replace "(.") "(\\. ")
-;;;                                                ((string= s "(,") "(\\, ")
-;;;                                                ((string= s "(''") "(PARENTH ")
-;;;                                                ((string= s "((''") "((PARENTH ")
-;;;                                                ((string= s "(``") "(PARENTH ")
-;;;                                                ((string= s "(``") "((PARENTH ")
-;;;                                                ((string= s "\")") "PARENTH)")
-;;;                                                ((string= s "\"))") "PARENTH))")
-;;;                                                ((member (subseq s 0 1) '("." ",") :test #'string=)
-;;;                                                 (format nil "\\~a" s))
-;;;                                                (t
-;;;                                                 (format nil "~a " s)))))))
-
 (defun get-beng-sentence-analysis (sentence &key (model "en")) ;; To do: allow sentence ID.
   (let* ((analysis (run-beng-parser (format nil "~a" sentence) :model model))
          (dependency-tree (rest (assoc :tree (first (rest (assoc :beng analysis))))))
-         (constituent-tree (convert-ica-string-to-ica-list (second (assoc :ica (second (first analysis)))))))
+         (constituent-tree (fcg::convert-ica-string-to-ica-list (second (assoc :ica (second (first analysis)))))))
     (values dependency-tree constituent-tree)))
-;; (run-beng-parser "this is a test")
-;; (get-beng-sentence-analysis "Once upon a time, there was a cat named  Cotton.")
 
 (in-package :beng)
 
 (defun make-units (lst)
+  "Helper function to make units with constituent information."
   (if (symbolp (second lst))
     (cons `(,(first lst)
             (constituents ,(rest lst)))
@@ -112,4 +87,3 @@
                 (constituents ,(mapcar #'first constituents)))
               (loop for constituent in constituents
                     append (make-units constituent)))))))
-

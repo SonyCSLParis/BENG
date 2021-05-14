@@ -10,7 +10,8 @@
         #+:hunchentoot-available-on-this-platform :web-interface
         :monitors
         :meta-layer-learning
-        :network))
+        :network)
+  (:import-from :nlp-tools *penelope-host*))
 
 (in-package :beng)
 

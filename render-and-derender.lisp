@@ -20,7 +20,6 @@
 ;; CONSTITUENT STRUCTURE
 ;; ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-(defgeneric represent-constituent-structure (analysis transient-structure key cxn-inventory &optional language))
 
 ;; TRANSLATING THE CONSTITUENT STRUCTURE FROM A SPACY DEPENDENCY ANALYSIS
 ;; ------------------------------------------------------------------------
@@ -263,10 +262,10 @@
                       &key cxn-inventory &allow-other-keys)
   (declare (ignorable mode))
   ;; Step 1: We do preprocessing with SpaCy and Benepar.
+  ;; Spacy does dependency tree analysis + merges entities (compounds)
+  ;; Benepar provides a constituent tree.
   (multiple-value-bind (dependency-tree constituent-tree)
       (nlp-tools:get-beng-sentence-analysis utterance)
-    (setf dependency-tree (dependency-string-append-compounds dependency-tree)
-          constituent-tree (constituent-string-append-compounds constituent-tree))
     ;; Step 2: Use the dependency tree for building an initial transient-structure
     (let* ((utterance-as-list (nlp-tools::dp-build-utterance-as-list-from-dependency-tree dependency-tree))
            (transient-structure (de-render utterance-as-list :de-render-with-scope
@@ -283,6 +282,40 @@
                                                                            (nlp-tools:dp-get-tag dependent))))
       transient-structure)))
 ;; (de-render "Luc Steels was the first director of Sony CSL Paris." :beng-spacy-benepar)
+;; (comprehend "Luc Steels was the first director of Sony CSL Paris.")
+;; (comprehend "Luc Steels")
+
+(defmethod de-render ((utterance string) (mode (eql :italian))
+                      &key cxn-inventory &allow-other-keys)
+  (declare (ignorable mode))
+  ;; Step 1: get the dependency tree
+  (let* ((dependency-tree (nlp-tools:get-penelope-dependency-analysis utterance :model "it"))
+         ;; We use the dependency tree as the basis for segmentation:
+         (segmented-utterance (nlp-tools:dp-build-utterance-as-list-from-dependency-tree dependency-tree))
+         ;; We now use FCG's default de-render method for building the transient structure:
+         (initial-transient-structure (de-render segmented-utterance :de-render-with-scope
+                                                 :cxn-inventory cxn-inventory)))
+    ;; Here you can write code to change the transient structure...
+    ;; In the code, a transient structure is still implemented using the FCG-2012 version that uses
+    ;; "coupled feature structures". We will only use the LEFT POLE of such structures for the transient structure.
+    initial-transient-structure))
+
+;; How to implement transient structures?
+;; A transient structure is essentially a list of units:
+'((unit-1
+   (form ((string unit-1 "test")))))
+
+(setf *test* (make-instance 'coupled-feature-structure
+                            :left-pole '((unit-1
+                                          (form ((string unit-1 "test")))))))
+
+;; To change the transient structure
+(setf (left-pole-structure *test*)
+      '((unit-2
+         (form ((string unit-2 "test2"))))))
+
+
+
 
 (defstruct (preprocessing-result (:conc-name pr-)) dependency-structure constituent-structure)
 

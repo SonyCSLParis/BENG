@@ -17,7 +17,12 @@
 (in-package #:asdf)
 
 (defsystem :beng
+  :author "Remi van Trijp <remi.vantrijp@sony.com>"
+  :license "GPL-3.0"
+  :version "2.0.1"
+  :description "Basic English Grammar implemented in Fluid Construction Grammar."
   :depends-on (:fcg
+               :category-hierarchies
                :xmls
                :nlp-tools
                :fcg-hybrids)
