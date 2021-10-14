@@ -1,5 +1,6 @@
-;;; Copyright (C) 2019  Sony Computer Science Laboratories Paris
-;;;                     Remi van Trijp (www.remivantrijp.eu)
+
+;;; Copyright (C) Sony Computer Science Laboratories Paris
+;;;               Author: Remi van Trijp (www.remivantrijp.eu)
 
 ;;;     This program is free software: you can redistribute it and/or modify
 ;;;     it under the terms of the GNU General Public License as published by
@@ -22,23 +23,21 @@
   :version "2.0.1"
   :description "Basic English Grammar implemented in Fluid Construction Grammar."
   :depends-on (:fcg
+               :irl
                :category-hierarchies
                :xmls
+               :cl-json :drakma
                :nlp-tools
                :fcg-hybrids)
   :serial t
   :components ((:file "package")
-               (:file "preprocessing")
-               (:file "render-and-derender")
                (:module "signature"
                 :serial t
                 :components ((:file "config")
-                             (:file "benepar-conversion")
                              (:file "fusion-hierarchy")
-                             (:file "fusion-matching")
-                             (:file "semantics")))
+                             (:file "fusion-matching") ;; To be reincorporated in the grammar.
+                             (:file "semantics"))) ;; To be reincorporated in the grammar.
                (:file "utilities")
-               (:file "cxn-processing")    
                (:module "make-lexicon"
                 :serial t
                 :components ((:file "list-adjectives")
@@ -46,23 +45,39 @@
                              (:file "list-nouns")
                              (:file "list-prepositions")
                              (:file "list-verbs")
-                             (:file "verb-conjugation")
-                             (:file "write-adjectives")
-                             (:file "write-adverbs")
-                             (:file "write-nouns")
-                             (:file "write-prepositions")
-                             (:file "write-verbs")))
+                             (:file "verb-conjugation")))
                (:file "load-and-save")
                (:module "construction-inventory"
                 :serial t
-                :components ((:file "spacy-pos-tags")
+                :components ((:file "hash-mode")
                              (:file "constructional-network-aux")
-                             (:file "meta-layer-classes")
-                             (:file "meta-layer-aux")
                              (:file "construction-inventory")))
-               (:module "experts"
+               (:module "frame-extractor"
                 :serial t
-                :components ((:file "named-entities")
-                             (:file "constituent-analysis")
-                             (:file "subclauses")
-                             (:file "theme")))))
+                :components ((:file "class-and-macros")
+                             (:file "semantic-frames")
+                             (:file "construction-inventory")
+                             (:file "frame-evoking-elements")))))
+
+;;;                (:file "cxn-processing")                   ;; To be reintegrated
+
+;;;                (:module "make-lexicon"
+;;;                 :serial t
+;;;                 :components ((:file "write-adjectives")   ;; To be reintegrated
+;;;                              (:file "write-adverbs")      ;; To be reintegrated
+;;;                              (:file "write-nouns")        ;; To be reintegrated
+;;;                              (:file "write-prepositions") ;; To be reintegrated
+;;;                              (:file "write-verbs")))      ;; To be reintegrated
+;;;                (:module "construction-inventory"
+;;;                 :serial t
+;;;                 :components ((:file "spacy-pos-tags")
+;;;                              (:file "constructional-network-aux")
+;;;                              (:file "meta-layer-classes")
+;;;                              (:file "meta-layer-aux")
+;;;                              (:file "construction-inventory")))
+;;;                (:module "experts"
+;;;                 :serial t
+;;;                 :components ((:file "named-entities")
+;;;                              (:file "constituent-analysis")
+;;;                              (:file "subclauses")
+;;;                              (:file "theme")))))

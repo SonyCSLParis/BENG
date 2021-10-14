@@ -1,5 +1,6 @@
-;;; Copyright (C) 2019  Sony Computer Science Laboratories Paris
-;;;                     Remi van Trijp (www.remivantrijp.eu)
+
+;;; Copyright (C) 2019-present  Sony Computer Science Laboratories Paris
+;;;                             Remi van Trijp (www.remivantrijp.eu)
 ;;; 
 ;;;     This program is free software: you can redistribute it and/or modify
 ;;;     it under the terms of the GNU General Public License as published by
@@ -60,6 +61,7 @@
 (defmethod find-cxn ((construction t)
                      (cxn-inventory constructional-network-inventory)
                      &key (key #'name) &allow-other-keys)
+  (declare (ignore key))
   (fcg-find-cxn (if (symbolp construction) construction
                   (name construction))
                 cxn-inventory))
@@ -77,6 +79,8 @@
 ;;;;; Even though the basic primitive of linguistic structure is assumed to be a "construction", the linguistic
 ;;;;; inventory is not one big soup of constructions, but rather a highly structured network. Moreove, here we test
 ;;;;; the hypothesis that this network may develop compartments that specialize on particular functions.
+;;;;;
+;;;;; Remi 20/05/2021: These classes are still unused and will be further explored in future updates.
 
 (export '(compartmentalized-construction-inventory
           compartments))

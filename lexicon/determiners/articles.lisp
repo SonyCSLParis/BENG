@@ -20,11 +20,10 @@
 ;;;; ----------------------------------------------------------------------------------------------
 (def-fcg-cxn a-lex
              ((?indefinite-article
-               (referent ?x)
-               (args (?x ?source))
                (lex-id a)
                (parent ?parent)
-               (sem-cat (sem-class selector))
+               (sem-cat (referent ?x)
+                        (args (?x ?source)))
                (syn-cat (lex-class determiner)
                         (agreement (- - + -))
                         (definite -)))
@@ -35,15 +34,14 @@
                (hash form ((string ?indefinite-article "a")))))
              :attributes (:label (hashed-meaning hashed-string)
                           :meaning indefinite-a :string "a" :POS ("DET")))
-;; (comprehend-and-formulate '("a"))
+;; (comprehend "a car")
 
 (def-fcg-cxn an-lex
              ((?indefinite-article
-               (referent ?x)
-               (args (?x ?source))
                (lex-id an)
                (parent ?parent)
-               (sem-cat (sem-class selector))
+               (sem-cat (referent ?x)
+                        (args (?x ?source)))
                (syn-cat (lex-class determiner)
                         (agreement (- - + -))
                         (definite -)))
@@ -54,15 +52,14 @@
                (hash form ((string ?indefinite-article "an")))))
              :attributes (:label (hashed-meaning hashed-string)
                           :meaning indefinite-an :string "an" :POS ("DET")))
-;; (comprehend-and-formulate '("an"))
+;; (comprehend "an apple")
 
 (def-fcg-cxn the-lex
              ((?definite-article
-               (referent ?x)
-               (args (?x ?source))
                (lex-id the)
                (parent ?parent)
-               (sem-cat (sem-class selector))
+               (sem-cat (referent ?x)
+                        (args (?x ?source)))
                (syn-cat (lex-class determiner)
                         (agreement (- - ?3sg ?pl))
                         (definite +)))
@@ -73,4 +70,4 @@
                (hash form ((string ?definite-article "the")))))
              :attributes (:label (hashed-meaning hashed-string)
                           :meaning identifiable-ref :string "the" :POS ("DET")))
-;; (comprehend-and-formulate '("the"))
+;; (comprehend "the thief")

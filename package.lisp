@@ -6,7 +6,7 @@
 	:common-lisp
         :utils
 	:test-framework
-	:fcg :nlp-tools
+	:fcg :nlp-tools :irl
         #+:hunchentoot-available-on-this-platform :web-interface
         :monitors
         :meta-layer-learning

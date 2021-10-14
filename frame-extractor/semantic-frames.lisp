@@ -1,5 +1,5 @@
-;;; Copyright (C) 2019-present  Sony Computer Science Laboratories Paris
-;;;                             Remi van Trijp (www.remivantrijp.eu)
+;;; Copyright (C) Sony Computer Science Laboratories Paris
+;;;               Author: Remi van Trijp (www.remivantrijp.eu)
 ;;; 
 ;;;     This program is free software: you can redistribute it and/or modify
 ;;;     it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 
 (in-package :beng)
 
-(defparameter *prepositions-spatiotemporal* nil)
-(defparameter *prepositions-other* nil)
+;;; ----------------------------------------------------------------------------
+;;; Library of semantic frames
+;;; ----------------------------------------------------------------------------
 
-(setf *prepositions-other* '("of" "like" "with")
-      *prepositions-spatiotemporal* (sort-alphabetically (remove-duplicates '("in" "out" "under" "on" "near" "from" "to" "into" "between" "near" "above" "across" "against" "behind" "along" "around" "below" "beneath" "inside" "off" "through" "front" "within" "at" "before" "until" "aboard" "after" "amid" "amidst" "beside" "besides" "beyond" "by" "for" "onto" "outside" "over" "toward" "towards") :test #'string=) :key #'identity))
+(def-sem-frame cause-frame (causer effect))

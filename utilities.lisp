@@ -1,5 +1,5 @@
-;;; Copyright (C) 2019  Sony Computer Science Laboratories Paris
-;;;                     Remi van Trijp (www.remivantrijp.eu)
+;;; Copyright (C) 2019-present  Sony Computer Science Laboratories Paris
+;;;                             Remi van Trijp (www.remivantrijp.eu)
 ;;; 
 ;;;     This program is free software: you can redistribute it and/or modify
 ;;;     it under the terms of the GNU General Public License as published by
@@ -15,43 +15,6 @@
 ;;; ----------------------------------------------------------------------------
 
 (in-package :beng)
-
-(defun beng-comprehend (utterance)
-  (activate-monitor trace-fcg)
-  (multiple-value-bind (a solution)
-      (comprehend utterance)
-    (declare (ignore a))
-    (setf *saved-cfs* (fcg-get-transient-structure solution))
-    (add-element `((h2) "Named entities:"))
-    (nlp-tools::run-displacy-ents utterance)
-    ;(add-element `((h2) "Theme-Rheme Structure:"))
-    ;(add-element `((p) ,(format nil "Theme: ~a" (beng-get-theme *saved-cfs*))))
-    ;(add-element `((p) ,(format nil "Rheme: ~a" (beng-get-rheme *saved-cfs*))))
-    (add-element `((h2) "Dependency Structure:"))
-    (nlp-tools::run-displacy utterance)
-    (add-element `((h2) "Immediate Constituent Structure:"))
-    (multiple-value-bind (a b) (nlp-tools::get-beng-sentence-analysis utterance)
-      (let* ((units (make-units b))
-             (cfs (make-instance 'coupled-feature-structure :left-pole units)))
-        (add-element (make-html-fcg-light cfs :feature-types (feature-types *fcg-constructions*)
-                                          :configuration (visualization-configuration *fcg-constructions*)
-                                          :construction-inventory *fcg-constructions*))))                                          
-    solution))
-
-;;;;; Configuration utilities.
-;;;;; --------------------------------------------------------------------------------
-(defun set-parse-order (order &optional (cxn-inventory *fcg-constructions*))
-  (set-configuration cxn-inventory :parse-order order)
-  (set-configuration (processing-cxn-inventory cxn-inventory)
-                     :parse-order order))
-;; (set-parse-order '(hashed-string hashed-lex-id phrasal arg-cxn))
-
-
-(defun set-production-order (order &optional (cxn-inventory *fcg-constructions*))
-  (set-configuration cxn-inventory :production-order order)
-  (set-configuration (processing-cxn-inventory cxn-inventory)
-                     :production-order order))
-;; (set-production-order '(hashed-meaning phrasal arg-cxn hashed-lex-id))
 
 ;;;;; English grammar utilities.
 ;;;;; --------------------------------------------------------------------------------
@@ -128,4 +91,29 @@
    (if (variable-p association)
      (find-constant-for-var association list-of-bindings)
      association)))
+
+#|
+(defun beng-comprehend (utterance)
+  "Deprecated function"
+  (activate-monitor trace-fcg)
+  (multiple-value-bind (a solution)
+      (comprehend utterance)
+    (declare (ignore a))
+    (setf *saved-cfs* (fcg-get-transient-structure solution))
+    (add-element `((h2) "Named entities:"))
+    (nlp-tools::run-displacy-ents utterance)
+    ;(add-element `((h2) "Theme-Rheme Structure:"))
+    ;(add-element `((p) ,(format nil "Theme: ~a" (beng-get-theme *saved-cfs*))))
+    ;(add-element `((p) ,(format nil "Rheme: ~a" (beng-get-rheme *saved-cfs*))))
+    (add-element `((h2) "Dependency Structure:"))
+    (nlp-tools::run-displacy utterance)
+    (add-element `((h2) "Immediate Constituent Structure:"))
+    (multiple-value-bind (a b) (nlp-tools::get-beng-sentence-analysis utterance)
+      (let* ((units (make-units b))
+             (cfs (make-instance 'coupled-feature-structure :left-pole units)))
+        (add-element (make-html-fcg-light cfs :feature-types (feature-types *fcg-constructions*)
+                                          :configuration (visualization-configuration *fcg-constructions*)
+                                          :construction-inventory *fcg-constructions*))))                                          
+    solution))
+|#
 

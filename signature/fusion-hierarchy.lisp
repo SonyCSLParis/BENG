@@ -1,5 +1,5 @@
-;;; Copyright (C) 2019  Sony Computer Science Laboratories Paris
-;;;                     Remi van Trijp (www.remivantrijp.eu)
+;;; Copyright (C) Sony Computer Science Laboratories Paris
+;;;               Author: Remi van Trijp (www.remivantrijp.eu)
 ;;; 
 ;;;     This program is free software: you can redistribute it and/or modify
 ;;;     it under the terms of the GNU General Public License as published by

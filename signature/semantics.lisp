@@ -46,8 +46,31 @@
                                      (temporal-relation output input reference-point)
                                      (event-qualification output input))))
 
-;;;;; Some helper functions.
-;;;;; ----------------------
+;;;;; For extracting hash-label from semantics.
+;;;;; -----------------------------------------
+(defgeneric beng-extract-hash-label (meaning-predicate key))
+
+(defmethod beng-extract-hash-label ((meaning list)
+                                    (key t))
+  (case (first meaning-predicate)
+    ('unique-referent (third meaning-predicate))
+    ('frame-type (third meaning-predicate))
+    ('domain (third meaning-predicate))
+    ('referent-status (second meaning-predicate))
+    ('inquired-referent (second meaning-predicate))
+    ('discourse-function (second meaning-predicate))
+    ('discourse-status (second meaning-predicate))
+    ('distance-to-rp (second meaning-predicate))
+    ('event-deixis (third meaning-predicate))
+    ('connector (second meaning-predicate))
+    ('temporal-relation (second meaning-predicate))
+    ('event-qualification (second meaning-predicate))
+    ('truth-value (second meaning-predicate))
+    (t
+     nil)))
+
+;;;;; Helper function to be replaced withh the defmethod above:
+;;;;; ---------------------------------------------------------
 (defun english-extract-label (meaning-predicate)
   "Given a meaning predicate, extract the label of the construction."
   (case (first meaning-predicate)

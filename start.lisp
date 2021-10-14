@@ -1,5 +1,5 @@
-;;; Copyright (C) 2019  Sony Computer Science Laboratories Paris
-;;;                     Remi van Trijp (www.remivantrijp.eu)
+;;; Copyright (C) 2019-present  Sony Computer Science Laboratories Paris
+;;;                             Remi van Trijp (www.remivantrijp.eu)
 ;;; 
 ;;;     This program is free software: you can redistribute it and/or modify
 ;;;     it under the terms of the GNU General Public License as published by
@@ -16,14 +16,16 @@
 
 ;;; Make sure that you have loaded the file english-grammar.asd (either through
 ;;; your Lisp init-file or manually). Then load the English grammar by evaluating:
-(ql:quickload :beng)
 
-(import '(nlp-tools::*penelope-host*))
+(ql:quickload :beng)
 
 (in-package :beng)
 
-(setf *penelope-host* "http://spacy.fcg-net.org/")
+(progn
+  (activate-monitor trace-fcg)
+  (make-empty-construction-inventory-cxns))
 
+;; (comprehend "he is happy")
 
 ;;; ******************************************************************
 ;;; *** IMPORTANT: BENG requires an internet connection to work!!! ***

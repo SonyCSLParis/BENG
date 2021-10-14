@@ -27,23 +27,6 @@
 ;; Code based on and using the fcg-hybrids code:
 ;; https://github.com/SonyCSLParis/fcg-hybrids
 
-(defun terminal-node-p (node)
-  (if (loop for x in (rest node)
-            when (listp x)
-            return t)
-    nil
-    t))
-;; (terminal-node-p '(nnp luc steels))
-
-(defun has-constituents-p (unit)
-  (unit-feature-value unit 'constituents))
-;; (has-constituents-p '(np (constituents det n)))
-;; (has-constituents-p '(n (lex-id test)))
-
-(defun make-unit-id (x)
-  (make-id (format nil "~a-unit" x)))
-;; (make-unit-id 's)
-
 (defmethod represent-constituent-structure ((constituent-tree list)
                                             (transient-structure coupled-feature-structure)
                                             (key (eql :benepar))

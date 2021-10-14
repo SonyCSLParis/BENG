@@ -1,5 +1,5 @@
-;;; Copyright (C) 2019  Sony Computer Science Laboratories Paris
-;;;                     Remi van Trijp (www.remivantrijp.eu)
+;;; Copyright (C) 2019-present  Sony Computer Science Laboratories Paris
+;;;                             Remi van Trijp (www.remivantrijp.eu)
 ;;; 
 ;;;     This program is free software: you can redistribute it and/or modify
 ;;;     it under the terms of the GNU General Public License as published by
@@ -14,45 +14,7 @@
 ;;;     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; ----------------------------------------------------------------------------
 
-(in-package :fcg)
-
-(defparameter *pos-tag-translation*
-  '(("CC" "CONJ")
-    ("CD" "CD")
-    ("DT" "DET")
-    ("EX" "EX")
-    ("FW" "NNP")
-    ("IN" "PREP")
-    ("JJ" "ADJ")
-    ("JJR" "ADJ")
-    ("JJS" "ADJ")
-    ("LS" "LS")
-    ("MD" "VERB")
-    ("NN" "NOUN")
-    ("NNS" "NOUN")
-    ("NNP" "NOUN")
-    ("NNPS" "NOUN")
-    ("PDT" "DET")
-    ("POS" "POS")
-    ("PRP" "PRONOUN")
-    ("PRP$" "PRONOUN")
-    ("RB" "ADV")
-    ("RBR" "ADV")
-    ("RBS" "ADV")
-    ("RP" "PARTICLE")
-    ("SYM" "SYMBOL")
-    ("TO" "TO")
-    ("UH" "INTERJECTION")
-    ("VB" "VERB")
-    ("VBD" "VERB")
-    ("VBG" "VERB")
-    ("VBN" "VERB")
-    ("VBP" "VERB")
-    ("VBZ" "VERB")
-    ("WDT" "WHDET")
-    ("WP" "WHPRON")
-    ("WP$" "WHPRON")
-    ("WRB" "ADV")))
+(in-package :beng)
 
 ;;;;; +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ;;;;; Priority Scores
